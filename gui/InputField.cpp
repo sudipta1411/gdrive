@@ -26,7 +26,7 @@ InputField :: ~InputField()
 
 void InputField :: focusInEvent(QFocusEvent *e)
 {
-	qDebug() << "focusInEvent";
+	//qDebug() << "focusInEvent";
 	opacity = 0.0;
 	update();
 	QLineEdit :: focusInEvent(e);
@@ -34,7 +34,7 @@ void InputField :: focusInEvent(QFocusEvent *e)
 
 void InputField :: focusOutEvent(QFocusEvent *e)
 {
-	qDebug() << "focusOutEvent";
+	//qDebug() << "focusOutEvent";
 	anim_ph_timer->start(fadeDuration);
 	QLineEdit :: focusOutEvent(e);
 }
