@@ -15,8 +15,6 @@ LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) :
 	st = _st;
 	usernameField = new InputField("Username",this);
 	passwordField = new InputField("Password",this);
-	//username = new QLineEdit(this);
-	//password = new QLineEdit(this);
 	//login = new QPushButton("Login",this);
 	//username->setFixedSize(st.minWidth,st.minHeight);
 	//password->setFixedSize(st.minWidth,st.minHeight);
@@ -30,8 +28,6 @@ LoginWidget :: ~LoginWidget()
 {
 	delete usernameField;
 	delete passwordField;
-	//delete username;
-	//delete password;
 	//delete login;
 }
 

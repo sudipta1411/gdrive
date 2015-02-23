@@ -26,6 +26,8 @@ class InputField : public QLineEdit {
 		qreal opacity;
 
 		fade_type fade_ph; /*for fading placeholder*/
+		int ph_x; /*Linear translation*/
+		int steps;
 		void startAnim();
 		void stopAnim();
 
