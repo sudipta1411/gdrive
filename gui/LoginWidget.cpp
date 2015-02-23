@@ -59,7 +59,7 @@ void LoginWidget :: paintEvent(QPaintEvent *event)
 	}*/
 	//QPainter p(this);
 	//username->move(40,30);
-	usernameField->move(40,30);
+	usernameField->move(50,50);
 }
 
 void LoginWidget :: onAnimationStarted() 
