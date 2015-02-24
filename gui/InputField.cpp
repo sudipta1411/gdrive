@@ -2,6 +2,7 @@
 #include <QColor>
 #include <QRect>
 #include <QPainter>
+#include <QBrush>
 #include "gui/InputField.h"
 
 /*XXX Style attributes 
@@ -16,6 +17,8 @@ namespace {
 	const qreal OPACITY_MAX = 1.0;
 	const qreal OPACITY_MIN = 0.0;
 	const qreal OPACITY_DELTA = 0.05;
+	int borderWidth = 3;
+	const QColor borderColor = QColor(49,127,205);
 }
 
 InputField :: InputField(const QString& ph,QWidget *parent):
@@ -23,7 +26,7 @@ InputField :: InputField(const QString& ph,QWidget *parent):
 		ph_x(0),phVisible(true)
 {
 	input_st = new LineEditStyle(QColor(49,127,205));
-	setStyle(input_st);
+	//setStyle(input_st);
 	anim_timer = new QTimer(this);
 	connect(anim_timer,SIGNAL(timeout()),this,SLOT(onAnimationStarted()));
 	setFixedSize(WIDTH,HEIGHT);
@@ -62,12 +65,14 @@ void InputField :: focusInEvent(QFocusEvent *e)
 {
 	//qDebug() << "focusInEvent";
 	//startAnim(OPACITY_MAX,fade_out,0);
+	::borderWidth = 3;
 	QLineEdit :: focusInEvent(e);
 }
 
 void InputField :: focusOutEvent(QFocusEvent *e)
 {
 	//qDebug() << "focusOutEvent";
+	::borderWidth = 0;
 	//startAnim(OPACITY_MIN,fade_in,WIDTH);
 	QLineEdit :: focusOutEvent(e);
 }
@@ -94,6 +99,13 @@ void InputField :: paintEvent(QPaintEvent *e)
 	QLineEdit :: paintEvent(e);
 	QRect r = rect();
 	QPainter p(this);
+	QBrush b(borderColor);
+
+	p.fillRect(0, 0, width() - borderWidth, borderWidth, b);
+	p.fillRect(width() - borderWidth, 0, borderWidth, height() - borderWidth, b);
+	p.fillRect(borderWidth, height() - borderWidth, width() - borderWidth,borderWidth, b);
+	p.fillRect(0, borderWidth, borderWidth, height() - borderWidth, b);
+
 	p.setClipRect(r);
 	p.save();
 	p.setOpacity(opacity);
