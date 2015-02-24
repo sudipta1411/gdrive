@@ -8,21 +8,24 @@
   Later it should be changed.
   Perhaps read from a configuration file*/
 namespace {
-	const int HEIGHT = 35;
-	const int WIDTH = 150;
-	const int fadeDuration = 15; //15 ms
+	const int HEIGHT = 40;
+	const int WIDTH = 160; /*This is multiple of 1/OPACITY_DELTA (20 in this case)*/
+	const int PH_MARGIN_H = 6; //Horizontal margin
+	const int PH_MARGIN_V = 10; //Vertical margin
+	const int fadeDuration = 10;
 	const qreal OPACITY_MAX = 1.0;
 	const qreal OPACITY_MIN = 0.0;
 	const qreal OPACITY_DELTA = 0.05;
 }
 
 InputField :: InputField(const QString& ph,QWidget *parent):
-		QLineEdit(parent),placeHolder(ph),opacity(1.0),fade_ph(fade_none),ph_x(0)
+		QLineEdit(parent),placeHolder(ph),opacity(1.0),fade_ph(fade_none),
+		ph_x(0),phVisible(true)
 {
 	input_st = new LineEditStyle(QColor(49,127,205));
 	setStyle(input_st);
-	anim_ph_timer = new QTimer(this);
-	connect(anim_ph_timer,SIGNAL(timeout()),this,SLOT(onAnimationStarted()));
+	anim_timer = new QTimer(this);
+	connect(anim_timer,SIGNAL(timeout()),this,SLOT(onAnimationStarted()));
 	setFixedSize(WIDTH,HEIGHT);
 	steps = (OPACITY_MAX-OPACITY_MIN)/OPACITY_DELTA;
 }
@@ -30,64 +33,74 @@ InputField :: InputField(const QString& ph,QWidget *parent):
 InputField :: ~InputField()
 {
 	delete input_st;
-	delete anim_ph_timer;
+	delete anim_timer;
 }
 
 void InputField :: startAnim()
 {
-	if(!anim_ph_timer) return ;
-	if(anim_ph_timer->isActive())
-		anim_ph_timer->stop();
-	anim_ph_timer->start(fadeDuration);
+	if(!anim_timer) return ;
+	if(anim_timer->isActive())
+		anim_timer->stop();
+	anim_timer->start(fadeDuration);
 }
 
 void InputField :: stopAnim()
 {
-	if(!anim_ph_timer) return;
-	anim_ph_timer->stop();
+	if(!anim_timer) return;
+	anim_timer->stop();
+}
+
+void InputField :: startAnim(qreal _opac,fade_type _ft,int _ph_x)
+{
+	opacity = _opac;
+	fade_ph = _ft;
+	ph_x = _ph_x;
+	startAnim();
 }
 
 void InputField :: focusInEvent(QFocusEvent *e)
 {
 	//qDebug() << "focusInEvent";
-	opacity = OPACITY_MAX;
-	fade_ph = fade_out;
-	ph_x = 0;
-	startAnim();
+	//startAnim(OPACITY_MAX,fade_out,0);
 	QLineEdit :: focusInEvent(e);
 }
 
 void InputField :: focusOutEvent(QFocusEvent *e)
 {
 	//qDebug() << "focusOutEvent";
-	opacity = OPACITY_MIN;
-	fade_ph = fade_in;
-	ph_x = WIDTH;
-	startAnim();
+	//startAnim(OPACITY_MIN,fade_in,WIDTH);
 	QLineEdit :: focusOutEvent(e);
 }
 
 void InputField :: keyPressEvent(QKeyEvent *e) 
 {
-	//qDebug()<<"keyPressEvent : " << e->count();
 	QLineEdit :: keyPressEvent(e);
+	bool empty = (text().length() == 0);
+	//qDebug()<<"keyPressEvent : " << text().length();
+	if(phVisible && !empty) 
+	{
+		startAnim(OPACITY_MAX,fade_out,0);
+		phVisible = false;
+	}
+	if(!phVisible && empty) 
+	{
+		startAnim(OPACITY_MIN,fade_in,WIDTH);
+		phVisible = true;
+	}
 }
+
 void InputField :: paintEvent(QPaintEvent *e)
 {
 	QLineEdit :: paintEvent(e);
 	QRect r = rect();
-	//qDebug() << "paintEvent" << rect().width() << "," << rect().height();
 	QPainter p(this);
-	QStyleOptionFrameV2 panel;
-    initStyleOption(&panel);
 	p.setClipRect(r);
 	p.save();
 	p.setOpacity(opacity);
 	QColor col = palette().text().color();
 	col.setAlpha(128);
 	p.setPen(col);
-	QRect phRect(r.x()+ph_x,r.y(),r.width(),r.height());
-	//qDebug() << "rect x : " << phRect.x();
+	QRect phRect(r.x()+ph_x+PH_MARGIN_H,r.y()+PH_MARGIN_V,r.width(),r.height());
 	p.drawText(phRect,placeHolder/*,QTextOption(Qt::AlignHCenter)*/);
 	p.restore();
 }
@@ -111,7 +124,6 @@ void InputField :: onAnimationStarted()
 			stopAnim();
 		}
 	}
-	//qDebug() << "ph_x : " << ph_x;
 	update();
 }
 

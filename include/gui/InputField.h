@@ -22,14 +22,16 @@ class InputField : public QLineEdit {
 	private:
 		QString placeHolder;
 		LineEditStyle *input_st;
-		QTimer *anim_ph_timer;
+		QTimer *anim_timer;
 		qreal opacity;
 
 		fade_type fade_ph; /*for fading placeholder*/
 		int ph_x; /*Linear translation*/
+		bool phVisible;
 		int steps;
 		void startAnim();
 		void stopAnim();
+		void startAnim(qreal _opac,fade_type _ft,int _ph_x);
 
 	public:
 		InputField(const QString &ph=QString(),QWidget *parent=0);
