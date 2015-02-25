@@ -28,7 +28,7 @@ main (int argc, char **argv)
   QPushButton *quitButton = new QPushButton("Login");
   quitButton->setMinimumWidth(60);
   quitButton->setMinimumHeight(50);
-  quitButton->setStyle (new PushButtonStyle);
+  quitButton->setStyle (new PushButtonStyle(QColor(91,116,168)));
   QLineEdit *lineEdit = new QLineEdit();
   lineEdit->setPlaceholderText("Username");
   lineEdit->setMinimumWidth(50);

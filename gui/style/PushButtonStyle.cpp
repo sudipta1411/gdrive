@@ -43,14 +43,7 @@ void PushButtonStyle :: drawPrimitive(PrimitiveElement element,const QStyleOptio
 	switch(element) {
 		case PE_PanelButtonCommand:
 		{
-			QColor buttonColor = QColor(91,116,168);/*option->palette.button().color();*/
-			/*int coeff = (option->state & State_MouseOver) ? 115 : 105;
-
-			QLinearGradient gradient(0, 0, 0, option->rect.height());
-			gradient.setColorAt(0.0, option->palette.light().color());
-			gradient.setColorAt(0.2, buttonColor.lighter(coeff));
-			gradient.setColorAt(0.8, buttonColor.darker(coeff));
-			gradient.setColorAt(1.0, option->palette.dark().color());*/
+			//QColor buttonColor = QColor(91,116,168);/*option->palette.button().color();*/
 			double penWidth = 0.2/*1.0*/;
 			if (const QStyleOptionButton * buttonOpt = 
 							qstyleoption_cast< const QStyleOptionButton *>(option)) {
@@ -124,21 +117,3 @@ void PushButtonStyle :: drawControl(ControlElement control,const QStyleOption *o
 	}
 }
 
-/*QRect PushButtonStyle :: subElementRect(SubElement element,const QStyleOption *opt,
-				const QWidget *widget) const
-{
-	QRect rect;
-	switch(element) {
-		case SE_PushButtonContents:
-		{
-
-		}
-		break;
-		case SE_PushButtonFocusRect:
-		{
-		}
-		break;
-		default:
-			return QCommonStyle :: subElementRect(element,opt,widget);
-	}
-}*/

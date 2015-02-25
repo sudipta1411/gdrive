@@ -3,13 +3,14 @@
 
 //#include <QStyleOption>
 #include <QPainter>
-//#include <QStyleHintReturn>
 #include "BaseStyle.h"
 
 class PushButtonStyle : public BaseStyle {
 	Q_OBJECT
+	private :
+		QColor buttonColor;
 	public:
-		PushButtonStyle() {}
+		PushButtonStyle(const QColor & color) { buttonColor = color; }
 		~PushButtonStyle() {}
 		
 		int pixelMetric(PixelMetric metric, const QStyleOption *option,

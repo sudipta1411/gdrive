@@ -36,6 +36,6 @@ Button :: ~Button()
 
 void Button :: initStyle()
 {
-	_st = new PushButtonStyle();
+	_st = new PushButtonStyle(QColor(91,116,168));
 	setStyle(_st);
 }
