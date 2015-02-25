@@ -19,7 +19,6 @@ class LoginWidget : public BaseWidget {
 	protected:
 		void paintEvent(QPaintEvent *event);
 	private:
-		QLineEdit *username,*password;
 		InputField *usernameField,*passwordField;
 		QPushButton *login;
 

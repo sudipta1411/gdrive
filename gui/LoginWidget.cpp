@@ -8,6 +8,10 @@
 #include <util/utils.h>
 #include "gui/Animation.h"
 
+namespace {
+	const int topSpacing = 30;
+}
+
 LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) : 
 		BaseWidget(true,parent)
 {
@@ -15,9 +19,7 @@ LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) :
 	st = _st;
 	usernameField = new InputField("Username",this);
 	passwordField = new InputField("Password",this);
-	//login = new QPushButton("Login",this);
-	//username->setFixedSize(st.minWidth,st.minHeight);
-	//password->setFixedSize(st.minWidth,st.minHeight);
+	passwordField->setEchoMode(QLineEdit::Password);
 	//login->setFixedSize(st.minWidth,st.minHeight);
 	startAnimation(st.fadingDuration);
 	animCache = QPixmap(width(),height());
@@ -55,7 +57,8 @@ void LoginWidget :: paintEvent(QPaintEvent *event)
 	}*/
 	//QPainter p(this);
 	//username->move(40,30);
-	usernameField->move(50,50);
+	usernameField->move(50,topSpacing);
+	passwordField->move(50,topSpacing + usernameField->height()+10);
 }
 
 void LoginWidget :: onAnimationStarted() 
