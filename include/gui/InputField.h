@@ -9,7 +9,6 @@
 #include <QTimer>
 #include <QColor>
 #include <QKeyEvent>
-#include "gui/style/LineEditStyle.h"
 
 typedef enum
 {
@@ -22,7 +21,6 @@ class InputField : public QLineEdit {
 	Q_OBJECT
 	private:
 		QString placeHolder;
-		LineEditStyle *input_st;
 		QTimer *anim_timer;
 
 		 /*placeholder animation*/

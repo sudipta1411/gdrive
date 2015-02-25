@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include "gui/BaseWidget.h"
 #include "gui/InputField.h"
+#include "gui/Button.h"
 #include "gui/Animation.h"
 #include "StyleAttribute.h"
 
@@ -20,7 +21,7 @@ class LoginWidget : public BaseWidget {
 		void paintEvent(QPaintEvent *event);
 	private:
 		InputField *usernameField,*passwordField;
-		QPushButton *login;
+		Button *login;
 
 		qreal opacity;
 		QPixmap animCache,bgAnimCache;

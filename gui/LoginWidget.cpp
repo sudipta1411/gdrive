@@ -19,6 +19,7 @@ LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) :
 	st = _st;
 	usernameField = new InputField("Username",this);
 	passwordField = new InputField("Password",this);
+	login = new Button("Login",this);
 	passwordField->setEchoMode(QLineEdit::Password);
 	//login->setFixedSize(st.minWidth,st.minHeight);
 	startAnimation(st.fadingDuration);
@@ -30,11 +31,12 @@ LoginWidget :: ~LoginWidget()
 {
 	delete usernameField;
 	delete passwordField;
-	//delete login;
+	delete login;
 }
 
 void LoginWidget :: paintEvent(QPaintEvent *event)
 {
+	int top = topSpacing;
 	//BaseWidget::paintEvent(event);
 	QRect r(event->rect());
 	bool trivial = (r==rect());
@@ -57,8 +59,11 @@ void LoginWidget :: paintEvent(QPaintEvent *event)
 	}*/
 	//QPainter p(this);
 	//username->move(40,30);
-	usernameField->move(50,topSpacing);
-	passwordField->move(50,topSpacing + usernameField->height()+10);
+	usernameField->move(50,top);
+	top += usernameField->height()+10;
+	passwordField->move(50,top);
+	top += passwordField->height() + 10;
+	login->move(50,top);
 }
 
 void LoginWidget :: onAnimationStarted() 

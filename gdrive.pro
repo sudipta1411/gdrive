@@ -21,6 +21,7 @@ HEADERS += ./include/gui/style/BaseStyle.h \
 		   ./include/gui/BaseWidget.h \
 		   ./include/gui/LoginWidget.h \
 		   ./include/gui/InputField.h \
+		   ./include/gui/Button.h \
 		   ./include/BaseApplication.h\ 
 		   ./include/BaseAppWindow.h \
 		   ./include/AppWindow.h \
@@ -36,6 +37,7 @@ SOURCES += main.cpp \
 		   ./gui/style/LineEditStyle.cpp \
 		   ./gui/Animation.cpp\
 		   ./gui/InputField.cpp\
+		   ./gui/Button.cpp\
 		   ./gui/style/CheckBoxStyle.cpp \
 		   ./gui/BaseWidget.cpp \
 		   ./gui/LoginWidget.cpp \

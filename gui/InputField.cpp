@@ -24,8 +24,6 @@ InputField :: InputField(const QString& ph,QWidget *parent):QLineEdit(parent),
 		placeHolder(ph),opacity(1.0),fade_ph(fade_none),ph_x(0),phVisible(true),
 		borderAnim(false),borderWidth(0),borderColor(::borderColor)
 {
-	input_st = new LineEditStyle(QColor(49,127,205));
-	//setStyle(input_st);
 	anim_timer = new QTimer(this);
 	connect(anim_timer,SIGNAL(timeout()),this,SLOT(onAnimationStarted()));
 	setFixedSize(WIDTH,HEIGHT);
@@ -36,7 +34,6 @@ InputField :: InputField(const QString& ph,QWidget *parent):QLineEdit(parent),
 
 InputField :: ~InputField()
 {
-	delete input_st;
 	delete anim_timer;
 }
 
