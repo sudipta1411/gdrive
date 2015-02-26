@@ -6,6 +6,7 @@
 namespace {
 	const int HEIGHT = 40;
 	const int WIDTH = 160;
+	const QColor buttonColor = QColor(49,127,205);
 }
 
 Button :: Button(QWidget *parent) : QPushButton(parent),
@@ -36,6 +37,6 @@ Button :: ~Button()
 
 void Button :: initStyle()
 {
-	_st = new PushButtonStyle(QColor(91,116,168));
+	_st = new PushButtonStyle(/*QColor(91,116,168)*/buttonColor);
 	setStyle(_st);
 }

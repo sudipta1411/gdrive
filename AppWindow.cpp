@@ -2,13 +2,17 @@
 #include <QtDebug>
 #include "util/utils.h"
 
+namespace {
+	const int widgetWidth = 350;
+	const int widgetHeight = 350;
+}
 AppWindow :: AppWindow(QWidget *parent,Qt::WindowFlags flags) : BaseAppWindow(parent,flags) 
 {
 	createStyles();
 	loginWidget = new LoginWidget(loginAttr,this);
 	//setCentralWidget(loginWidget);
-	QPixmap bg = util::myGrab(this, QRect(0, 39, width(), height() - 39));
-	loginWidget->setFixedSize(250,250);
+	//QPixmap bg = util::myGrab(this, QRect(0, 39, width(), height() - 39));
+	loginWidget->setFixedSize(widgetWidth,widgetHeight);
 	//loginWidget->animShow(bg);
 	//qDebug() << "In LoginWidget constructor show";
 	//show();

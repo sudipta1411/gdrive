@@ -10,6 +10,7 @@
 
 namespace {
 	const int topSpacing = 30;
+	const int spacingBetweenWidget = 10;
 }
 
 LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) : 
@@ -19,7 +20,7 @@ LoginWidget :: LoginWidget(const style::StyleAttribute &_st,QWidget *parent) :
 	st = _st;
 	usernameField = new InputField("Username",this);
 	passwordField = new InputField("Password",this);
-	login = new Button("Login",this);
+	login = new Button("Sign In",this);
 	passwordField->setEchoMode(QLineEdit::Password);
 	//login->setFixedSize(st.minWidth,st.minHeight);
 	startAnimation(st.fadingDuration);
@@ -43,27 +44,11 @@ void LoginWidget :: paintEvent(QPaintEvent *event)
 	QPainter p(this);
 	p.setOpacity(opacity);
 	p.drawPixmap(rect(),animCache);
-	/*p.drawRect(rect());
-	//p.setPen(QPen(Qt::blue));
-	p.fillRect(rect(),Qt::white);
-	p.drawRect(rect());
-	if(trivial)
-		p.setClipRect(r);*/
-	/*if(animating()) {
-		p.setOpacity(aBGAlpha.current());
-		p.drawPixmap(aBGCoord.current(),0,bgAnimCache);
-		p.setOpacity(aAlpha.current());
-		p.drawPixmap(aCoord.current(),0,animCache);
-	} else {
-		//p.fillRect(rect(), st.bg.blue());
-	}*/
-	//QPainter p(this);
-	//username->move(40,30);
-	usernameField->move(50,top);
-	top += usernameField->height()+10;
-	passwordField->move(50,top);
-	top += passwordField->height() + 10;
-	login->move(50,top);
+	usernameField->move((width() - usernameField->width()) / 2,top);
+	top += usernameField->height() + spacingBetweenWidget;
+	passwordField->move((width() - passwordField->width()) / 2,top);
+	top += passwordField->height() + spacingBetweenWidget*4;
+	login->move((width() - login->width()) / 2,top);
 }
 
 void LoginWidget :: onAnimationStarted() 
