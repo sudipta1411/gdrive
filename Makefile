@@ -322,7 +322,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d DebugIntermediate/gdrive1.0.0 || mkdir -p DebugIntermediate/gdrive1.0.0
-	$(COPY_FILE) --parents $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
+	$(COPY_FILE) --parents $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h include/gjson/gjson_type.h include/gjson/gjson_value.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
 
 
 clean:compiler_clean 
@@ -371,18 +371,15 @@ GenFiles/Debug/moc_BaseWidget.cpp: include/gui/BaseWidget.h
 
 GenFiles/Debug/moc_LoginWidget.cpp: include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/gui/LoginWidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/sudipta/gdrive -I/home/sudipta/gdrive/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include include/gui/LoginWidget.h -o GenFiles/Debug/moc_LoginWidget.cpp
 
-GenFiles/Debug/moc_InputField.cpp: include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
-		include/gui/InputField.h
+GenFiles/Debug/moc_InputField.cpp: include/gui/InputField.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/sudipta/gdrive -I/home/sudipta/gdrive/include -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/4.9 -I/usr/include/x86_64-linux-gnu/c++/4.9 -I/usr/include/c++/4.9/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include include/gui/InputField.h -o GenFiles/Debug/moc_InputField.cpp
 
 GenFiles/Debug/moc_Button.cpp: include/gui/style/PushButtonStyle.h \
@@ -399,10 +396,9 @@ GenFiles/Debug/moc_BaseAppWindow.cpp: include/BaseAppWindow.h
 GenFiles/Debug/moc_AppWindow.cpp: include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/BaseAppWindow.h \
@@ -414,10 +410,9 @@ GenFiles/Debug/moc_Application.cpp: include/BaseApplication.h \
 		include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/BaseAppWindow.h \
@@ -461,10 +456,9 @@ DebugIntermediate/AppWindow.o: AppWindow.cpp include/AppWindow.h \
 		include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/BaseAppWindow.h \
@@ -477,10 +471,9 @@ DebugIntermediate/Application.o: Application.cpp include/Application.h \
 		include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/BaseAppWindow.h
@@ -500,9 +493,7 @@ DebugIntermediate/LineEditStyle.o: gui/style/LineEditStyle.cpp include/gui/style
 DebugIntermediate/Animation.o: gui/Animation.cpp include/gui/Animation.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/Animation.o gui/Animation.cpp
 
-DebugIntermediate/InputField.o: gui/InputField.cpp include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h
+DebugIntermediate/InputField.o: gui/InputField.cpp include/gui/InputField.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/InputField.o gui/InputField.cpp
 
 DebugIntermediate/Button.o: gui/Button.cpp include/gui/Button.h \
@@ -520,10 +511,9 @@ DebugIntermediate/BaseWidget.o: gui/BaseWidget.cpp include/gui/BaseWidget.h
 DebugIntermediate/LoginWidget.o: gui/LoginWidget.cpp include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/util/utils.h
@@ -537,10 +527,9 @@ DebugIntermediate/utils.o: util/utils.cpp include/util/utils.h \
 		include/gui/LoginWidget.h \
 		include/gui/BaseWidget.h \
 		include/gui/InputField.h \
-		include/gui/style/LineEditStyle.h \
-		include/gui/style/BaseStyle.h \
 		include/gui/Button.h \
 		include/gui/style/PushButtonStyle.h \
+		include/gui/style/BaseStyle.h \
 		include/gui/Animation.h \
 		include/BaseAppWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/utils.o util/utils.cpp

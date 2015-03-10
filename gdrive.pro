@@ -27,7 +27,9 @@ HEADERS += ./include/gui/style/BaseStyle.h \
 		   ./include/AppWindow.h \
 		   ./include/Application.h \
 		   ./include/StyleAttribute.h \
-		   ./include/util/utils.h
+		   ./include/util/utils.h \
+		   ./include/gjson/gjson_type.h \
+		   ./include/gjson/gjson_value.h
 SOURCES += main.cpp \
 		   BaseAppWindow.cpp \
 		   AppWindow.cpp \

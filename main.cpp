@@ -17,12 +17,13 @@
 #include "AppWindow.h"
 #include "Application.h"
 #include "gui/Animation.h"
+#include "gjson/gjson_value.h"
 
 int
 main (int argc, char **argv)
 {
   Application app (argc, argv);
-  QPalette pal = app.palette();
+  /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
   app.setPalette(pal);
   QPushButton *quitButton = new QPushButton("Login");
@@ -52,7 +53,7 @@ main (int argc, char **argv)
   widget.setMinimumHeight(400);
   widget.setLayout (layout);
   //widget.show ();
-  /*AppWindow window;
+  AppWindow window;
   window.initSize();
   window.initColor(QColor(208,205,204));
   window.firstShow();*/
