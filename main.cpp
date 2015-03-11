@@ -18,10 +18,18 @@
 #include "Application.h"
 #include "gui/Animation.h"
 #include "gjson/gjson_value.h"
+#include <string>
+#include <iostream>
+using namespace gjson;
 
 int
 main (int argc, char **argv)
 {
+  
+  GJsonInt *j_int = new GJsonInt(10);
+  std::cout << j_int->getValue() << std::endl;
+  GJsonString *j_string = new GJsonString(std::string("Hello World"));
+  std::cout << j_string->getValue() << std::endl;
   Application app (argc, argv);
   /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
