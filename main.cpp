@@ -34,7 +34,7 @@ main (int argc, char **argv)
   array->add(j_int);
   array->add(j_string);
   GenericValue* v = array->get(0);
-  GJsonInt* j = dynamic_cast<GJsonInt*>(v);//gjson_cast(v,int_value);
+  GJsonInt* j = /*dynamic_cast<GJsonInt*>(v);*/gjson_cast<GJsonInt*>(v);
   v = array->get(1);
   GJsonString* js = dynamic_cast<GJsonString*>(v);
   std::cout << j->getValue() << "," << js->getValue() << std::endl;

@@ -133,11 +133,11 @@ BEGIN_GJSON_NAMESPACE
 	/*converts base calss value to a proper derived class value,
 	 * using type information*/
 	template<typename T>
-	GJsonValue<T>* gjson_cast(GenericValue *value)
+	T gjson_cast(GenericValue *value)
 	{
 		if(!value)
-			return (GenericValue*)0;
-		switch(value->getType())
+			return 0;
+		/*switch(value->getType())
 		{
 			case int_value :
 				return dynamic_cast<GJsonInt*>(value);
@@ -151,7 +151,8 @@ BEGIN_GJSON_NAMESPACE
 				return dynamic_cast<GJsonArray*>(value);
 			default :
 				return (GenericValue*)0;
-		}
+		}*/
+		return dynamic_cast<T>(value);
 	}
 	
 END_GJSON_NAMESPACE
