@@ -1,26 +1,43 @@
 #ifndef __GJSONVALUE_h__
 #define __GJSONVALUE_h__
 
+#include <iostream>
 #include <string>
+#include <vector>
 #include "gjson/gjson_type.h"
 
 BEGIN_GJSON_NAMESPACE
 	/*Generic value*/
-	template<typename T>
-	class GJsonValue 
+	class GenericValue 
 	{
-		protected :
-			T value;
 		private :
 			value_type_t type;
 		public :
-			GJsonValue(T _value,value_type_t _type = null_value) : value(_value),type(_type) {}
+			GenericValue(value_type_t _type) : type(_type) {}
+			virtual ~GenericValue() {}
 			virtual std::string stringify() const = 0;
-			T getValue() const { return value; } 
 			value_type_t getType() const
 			{
 				return this->type;
 			}
+	};
+
+	template<typename T>
+	class GJsonValue : public GenericValue
+	{
+		protected :
+			T value;
+		private :
+			/*Copy constructor disabled*/
+			GJsonValue(const GJsonValue<T> &_value); 
+			/*value_type_t type;*/
+		public :
+			GJsonValue(T _value,value_type_t _type = null_value) : GenericValue(_type),value(_value)/*,type(_type)*/ {}
+			~GJsonValue() 
+			{
+				std::cout << "Deleting " << getType() << std::endl;
+			}
+			virtual T getValue() const { return value; } 
 	};
 
 	class GJsonInt : public GJsonValue<int> 
@@ -46,7 +63,7 @@ BEGIN_GJSON_NAMESPACE
 	class GJsonString : public GJsonValue<std::string>
 	{
 		public:
-			GJsonString(std::string _value) : GJsonValue(_value,string_value) {}
+			GJsonString(std::string &_value) : GJsonValue(_value,string_value) {}
 			std::string stringify() const
 			{
 				return value;
@@ -65,6 +82,78 @@ BEGIN_GJSON_NAMESPACE
 
 	/*An array can contain any type of value
 	 * eg [1,2,"x",{"y":1234}]*/
+	class GJsonArray : GenericValue
+	{
+		typedef GenericValue* ptr_to_gen;
+		private :
+			std::vector<GenericValue*> *array;
+		public : 
+			GJsonArray():GenericValue(array_value) 
+			{
+				array = new std::vector<GenericValue*>();
+			}
+			GJsonArray(const GJsonArray &j_array) : GenericValue(array_value)
+			{
+				const std::vector<GenericValue*> *v = j_array.getArray();
+				array = new std::vector<GenericValue*>(*v);
+			}
+			~GJsonArray() 
+			{
+				for(std::vector<GenericValue*>::iterator first = array->begin();
+								first != array->end();first++)
+				{
+					delete *first;
+				}
+				delete array;
+			}
+			std::vector<GenericValue*> *getArray() const 
+			{ 
+				return array; 
+			}
+
+			bool add(const ptr_to_gen& value)
+			{
+				array->push_back(value);
+				return true;
+			}
+
+			GenericValue* get(int pos)
+			{
+				if(pos<0 || (unsigned)pos>=array->size())
+					return (GenericValue*)0;
+				return array->at(pos);
+			}
+
+			std::string stringify() const
+			{
+				return std::string();
+			}
+	};
+
+	/*converts base calss value to a proper derived class value,
+	 * using type information*/
+	template<typename T>
+	GJsonValue<T>* gjson_cast(GenericValue *value)
+	{
+		if(!value)
+			return (GenericValue*)0;
+		switch(value->getType())
+		{
+			case int_value :
+				return dynamic_cast<GJsonInt*>(value);
+			case real_value :
+				return dynamic_cast<GJsonReal*>(value);
+			case string_value :
+				return dynamic_cast<GJsonString*>(value);
+			case bool_value :
+				return dynamic_cast<GJsonBool*>(value);
+			case array_value :
+				return dynamic_cast<GJsonArray*>(value);
+			default :
+				return (GenericValue*)0;
+		}
+	}
+	
 END_GJSON_NAMESPACE
 
 #endif /*__GJSONVALUE_h__*/

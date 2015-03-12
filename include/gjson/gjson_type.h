@@ -5,16 +5,16 @@
 #define END_GJSON_NAMESPACE } /*namespace gjson*/
 
 /*Various token type*/
-#define ARRAY_BEGIN "["
-#define ARRAY_END "]"
-#define OBJECT_BEGIN "{"
-#define OBJECT_END "}"
-#define STRING_BEGIN "\""
+#define ARRAY_BEGIN '['
+#define ARRAY_END ']'
+#define OBJECT_BEGIN '{'
+#define OBJECT_END '}'
+#define STRING_BEGIN '"'
 #define STRING_END STRING_BEGIN
-#define STRINF_BEGIN_1 "'"
+#define STRINF_BEGIN_1 '\''
 #define STRING_END_1 STRINF_BEGIN_1
-#define SEPERATOR ","
-#define MEMBER_SEPERATOR ":"
+#define SEPERATOR ','
+#define MEMBER_SEPERATOR ':'
 
 /*type of value in json format*/
 enum value_type_t 

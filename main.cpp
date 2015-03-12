@@ -25,11 +25,20 @@ using namespace gjson;
 int
 main (int argc, char **argv)
 {
-  
+  std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);
-  std::cout << j_int->getValue() << std::endl;
-  GJsonString *j_string = new GJsonString(std::string("Hello World"));
-  std::cout << j_string->getValue() << std::endl;
+  //std::cout << j_int->getValue() << std::endl;
+  GJsonString *j_string = new GJsonString(s);
+  //std::cout << j_string->getValue() << std::endl;
+  GJsonArray *array = new GJsonArray();
+  array->add(j_int);
+  array->add(j_string);
+  GenericValue* v = array->get(0);
+  GJsonInt* j = dynamic_cast<GJsonInt*>(v);//gjson_cast(v,int_value);
+  v = array->get(1);
+  GJsonString* js = dynamic_cast<GJsonString*>(v);
+  std::cout << j->getValue() << "," << js->getValue() << std::endl;
+  delete array;
   Application app (argc, argv);
   /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
