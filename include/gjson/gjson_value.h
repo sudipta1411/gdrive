@@ -1,9 +1,10 @@
 #ifndef __GJSONVALUE_h__
 #define __GJSONVALUE_h__
 
-#include <iostream>
+//#include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include "gjson/gjson_type.h"
 
 BEGIN_GJSON_NAMESPACE
@@ -35,7 +36,7 @@ BEGIN_GJSON_NAMESPACE
 			GJsonValue(T _value,value_type_t _type = null_value) : GenericValue(_type),value(_value)/*,type(_type)*/ {}
 			~GJsonValue() 
 			{
-				std::cout << "Deleting " << getType() << std::endl;
+				//std::cout << "Deleting " << getType() << std::endl;
 			}
 			virtual T getValue() const { return value; } 
 	};
@@ -130,6 +131,17 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
+	class GJsonMap : public GenericValue
+	{
+		private :
+			std::map<GenericValue*,GenericValue*> *jsonMap; 
+		public:
+		   	GJsonMap() : GenericValue(object_value)
+			{
+				jsonMap = new std::map<GenericValue*,GenericValue*>();
+			}
+	};
+
 	/*converts base calss value to a proper derived class value,
 	 * using type information*/
 	template<typename T>
@@ -137,21 +149,6 @@ BEGIN_GJSON_NAMESPACE
 	{
 		if(!value)
 			return 0;
-		/*switch(value->getType())
-		{
-			case int_value :
-				return dynamic_cast<GJsonInt*>(value);
-			case real_value :
-				return dynamic_cast<GJsonReal*>(value);
-			case string_value :
-				return dynamic_cast<GJsonString*>(value);
-			case bool_value :
-				return dynamic_cast<GJsonBool*>(value);
-			case array_value :
-				return dynamic_cast<GJsonArray*>(value);
-			default :
-				return (GenericValue*)0;
-		}*/
 		return dynamic_cast<T>(value);
 	}
 	

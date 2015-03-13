@@ -28,6 +28,8 @@ HEADERS += ./include/gui/style/BaseStyle.h \
 		   ./include/Application.h \
 		   ./include/StyleAttribute.h \
 		   ./include/util/utils.h \
+		   ./include/util/HashCode.h \
+		   ./include/util/HashMap.h \
 		   ./include/gjson/gjson_type.h \
 		   ./include/gjson/gjson_value.h
 SOURCES += main.cpp \
@@ -43,4 +45,6 @@ SOURCES += main.cpp \
 		   ./gui/style/CheckBoxStyle.cpp \
 		   ./gui/BaseWidget.cpp \
 		   ./gui/LoginWidget.cpp \
-		   ./util/utils.cpp
+		   ./util/utils.cpp \
+		   ./util/HashCode.cpp \
+		   ./util/HashMap.cpp

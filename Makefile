@@ -58,7 +58,9 @@ SOURCES       = main.cpp \
 		gui/style/CheckBoxStyle.cpp \
 		gui/BaseWidget.cpp \
 		gui/LoginWidget.cpp \
-		util/utils.cpp GenFiles/Debug/moc_BaseStyle.cpp \
+		util/utils.cpp \
+		util/HashCode.cpp \
+		util/HashMap.cpp GenFiles/Debug/moc_BaseStyle.cpp \
 		GenFiles/Debug/moc_PushButtonStyle.cpp \
 		GenFiles/Debug/moc_LineEditStyle.cpp \
 		GenFiles/Debug/moc_Animation.cpp \
@@ -85,6 +87,8 @@ OBJECTS       = DebugIntermediate/main.o \
 		DebugIntermediate/BaseWidget.o \
 		DebugIntermediate/LoginWidget.o \
 		DebugIntermediate/utils.o \
+		DebugIntermediate/HashCode.o \
+		DebugIntermediate/HashMap.o \
 		DebugIntermediate/moc_BaseStyle.o \
 		DebugIntermediate/moc_PushButtonStyle.o \
 		DebugIntermediate/moc_LineEditStyle.o \
@@ -165,7 +169,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		gui/style/CheckBoxStyle.cpp \
 		gui/BaseWidget.cpp \
 		gui/LoginWidget.cpp \
-		util/utils.cpp
+		util/utils.cpp \
+		util/HashCode.cpp \
+		util/HashMap.cpp
 QMAKE_TARGET  = gdrive
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = gdrive
@@ -322,7 +328,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d DebugIntermediate/gdrive1.0.0 || mkdir -p DebugIntermediate/gdrive1.0.0
-	$(COPY_FILE) --parents $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h include/gjson/gjson_type.h include/gjson/gjson_value.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
+	$(COPY_FILE) --parents $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h include/util/HashCode.h include/util/HashMap.h include/gjson/gjson_type.h include/gjson/gjson_value.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp util/HashCode.cpp util/HashMap.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
 
 
 clean:compiler_clean 
@@ -446,7 +452,9 @@ DebugIntermediate/main.o: main.cpp include/gui/style/PushButtonStyle.h \
 		include/gui/Animation.h \
 		include/StyleAttribute.h \
 		include/BaseAppWindow.h \
-		include/Application.h
+		include/Application.h \
+		include/gjson/gjson_value.h \
+		include/gjson/gjson_type.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/main.o main.cpp
 
 DebugIntermediate/BaseAppWindow.o: BaseAppWindow.cpp include/BaseAppWindow.h
@@ -533,6 +541,13 @@ DebugIntermediate/utils.o: util/utils.cpp include/util/utils.h \
 		include/gui/Animation.h \
 		include/BaseAppWindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/utils.o util/utils.cpp
+
+DebugIntermediate/HashCode.o: util/HashCode.cpp include/util/HashCode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/HashCode.o util/HashCode.cpp
+
+DebugIntermediate/HashMap.o: util/HashMap.cpp include/util/HashMap.h \
+		include/util/HashCode.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/HashMap.o util/HashMap.cpp
 
 DebugIntermediate/moc_BaseStyle.o: GenFiles/Debug/moc_BaseStyle.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/moc_BaseStyle.o GenFiles/Debug/moc_BaseStyle.cpp

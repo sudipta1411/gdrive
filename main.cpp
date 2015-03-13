@@ -36,8 +36,11 @@ main (int argc, char **argv)
   GenericValue* v = array->get(0);
   GJsonInt* j = /*dynamic_cast<GJsonInt*>(v);*/gjson_cast<GJsonInt*>(v);
   v = array->get(1);
-  GJsonString* js = dynamic_cast<GJsonString*>(v);
-  std::cout << j->getValue() << "," << js->getValue() << std::endl;
+  GJsonString* js = gjson_cast<GJsonString*>(v);//dynamic_cast<GJsonString*>(v);
+  if(!js)
+    std::cout<<"Invalid conversion" << std::endl;
+  else
+  	std::cout << j->getValue() << "," << js->getValue() << std::endl;
   delete array;
   Application app (argc, argv);
   /*QPalette pal = app.palette();
