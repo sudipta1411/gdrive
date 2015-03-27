@@ -27,6 +27,19 @@ void HashMap<Key,Value> :: deleteBuckets(std::vector<Cell*>& bucketToDel)
 }
 
 template<typename Key,typename Value>
+void HashMap<Key,Value> :: rehash()
+{
+	std::vector<Cell*> oldBuckets = buckets;
+	createBuckets(oldBuckets.size()*2 + 1);
+	for(int i=0;i<oldBuckets.size();i++)
+	{
+		for(Cell *cell = oldBuckets[i];cell != NULL;cell = cell->next)
+			put(cell->_key,cell->_value);
+	}
+	deleteBuckets(oldBuckets);
+}
+
+template<typename Key,typename Value>
 HashMap<Key,Value> :: HashMap()
 {
 	createBuckets(INITIAL_BUCKET_COUNT);
@@ -99,5 +112,57 @@ template<typename Key,typename Value>
 Value HashMap<Key,Value> :: operator [](const Key& key) const
 {
 	return get(key);
+}
+
+template<typename Key,typename Value>
+bool HashMap<Key,Value> :: remove(const Key& key)
+{
+	int bucketHash = hashCode(key) % nBuckets;
+	Cell *parent = NULL;
+	Cell *cell = findCell(bucketHash,key,parent);
+	if(cell != NULL)
+	{
+		if(parent == NULL)
+			buckets[bucketHash] = cell->next;
+		else
+			parent->next = cell->next;
+		delete cell;
+		nEntries--;
+	}
+	return true;
+}
+
+template<typename Key,typename Value>
+std::vector<Key> HashMap<Key,Value> :: keys() const
+{
+	std::vector<Key> keys;
+	for(int i=0;i<buckets.size();i++)
+	{
+		for(Cell *cell = buckets[i];cell != NULL;cell=cell->next)
+			keys.add(cell->_key);
+	}
+	return keys;
+}
+
+template<typename Key,typename Value>
+std::vector<Value> HashMap<Key,Value> :: values() const
+{
+	std::vector<Value> values;
+	for(int i=0;i<buckets.size();i++)
+	{
+		for(Cell *cell = buckets[i];cell != NULL;cell=cell->next)
+			values.add(cell->_value);
+	}
+	return values;
+}
+
+template<typename Key,typename Value>
+void HashMap<Key,Value> :: putAll(const HashMap& map)
+{
+	std::vector<Key> keys = map.keys();
+	for(int i=0;i<keys.size();i++)
+	{
+		put(keys[i],map.get(keys[i]));
+	}
 }
 

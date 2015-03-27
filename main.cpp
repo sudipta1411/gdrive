@@ -18,6 +18,7 @@
 #include "Application.h"
 #include "gui/Animation.h"
 #include "gjson/gjson_value.h"
+#include "util/HashMap.h"
 #include <string>
 #include <iostream>
 using namespace gjson;
@@ -27,7 +28,7 @@ main (int argc, char **argv)
 {
   std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);
-  //std::cout << j_int->getValue() << std::endl;
+  std::cout << "stringify : " << j_int->stringify()<< std::endl;
   GJsonString *j_string = new GJsonString(s);
   //std::cout << j_string->getValue() << std::endl;
   GJsonArray *array = new GJsonArray();
@@ -42,6 +43,8 @@ main (int argc, char **argv)
   else
   	std::cout << j->getValue() << "," << js->getValue() << std::endl;
   delete array;
+  HashMap<std::string,std::string> hm;
+  hm.put("A","XYZ");
   Application app (argc, argv);
   /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
