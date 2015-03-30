@@ -46,5 +46,4 @@ SOURCES += main.cpp \
 		   ./gui/BaseWidget.cpp \
 		   ./gui/LoginWidget.cpp \
 		   ./util/utils.cpp \
-		   ./util/HashCode.cpp \
-		   ./util/HashMap.cpp
+		   ./util/HashCode.cpp 
