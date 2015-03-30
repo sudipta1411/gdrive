@@ -6,17 +6,22 @@
 #include <vector>
 #include <map>
 #include "gjson/gjson_type.h"
+#include "util/HashMap.h"
 
 BEGIN_GJSON_NAMESPACE
 	/*Generic value*/
-	class GenericValue 
+	class GenericValue
 	{
 		private :
 			value_type_t type;
 		public :
+            GenericValue() : type(null_value) {}
 			GenericValue(value_type_t _type) : type(_type) {}
 			virtual ~GenericValue() {}
-			virtual std::string stringify() const = 0;
+			virtual std::string stringify() const
+            {
+                return std::string();
+            }
 			value_type_t getType() const
 			{
 				return this->type;
@@ -30,18 +35,18 @@ BEGIN_GJSON_NAMESPACE
 			T value;
 		private :
 			/*Copy constructor disabled*/
-			GJsonValue(const GJsonValue<T> &_value); 
+			GJsonValue(const GJsonValue<T> &_value);
 			/*value_type_t type;*/
 		public :
 			GJsonValue(T _value,value_type_t _type = null_value) : GenericValue(_type),value(_value)/*,type(_type)*/ {}
-			~GJsonValue() 
+			~GJsonValue()
 			{
 				//std::cout << "Deleting " << getType() << std::endl;
 			}
-			virtual T getValue() const { return value; } 
+			virtual T getValue() const { return value; }
 	};
 
-	class GJsonInt : public GJsonValue<int> 
+	class GJsonInt : public GJsonValue<int>
 	{
 		public :
 			GJsonInt(int _value) : GJsonValue(_value,int_value) {}
@@ -88,8 +93,8 @@ BEGIN_GJSON_NAMESPACE
 		typedef GenericValue* ptr_to_gen;
 		private :
 			std::vector<GenericValue*> *array;
-		public : 
-			GJsonArray():GenericValue(array_value) 
+		public :
+			GJsonArray():GenericValue(array_value)
 			{
 				array = new std::vector<GenericValue*>();
 			}
@@ -98,7 +103,7 @@ BEGIN_GJSON_NAMESPACE
 				const std::vector<GenericValue*> *v = j_array.getArray();
 				array = new std::vector<GenericValue*>(*v);
 			}
-			~GJsonArray() 
+			~GJsonArray()
 			{
 				for(std::vector<GenericValue*>::iterator first = array->begin();
 								first != array->end();first++)
@@ -107,9 +112,9 @@ BEGIN_GJSON_NAMESPACE
 				}
 				delete array;
 			}
-			std::vector<GenericValue*> *getArray() const 
-			{ 
-				return array; 
+			std::vector<GenericValue*> *getArray() const
+			{
+				return array;
 			}
 
 			bool add(const ptr_to_gen& value)
@@ -134,12 +139,39 @@ BEGIN_GJSON_NAMESPACE
 	class GJsonMap : public GenericValue
 	{
 		private :
-			std::map<GenericValue*,GenericValue*> *jsonMap; 
+			//std::map<GenericValue*,GenericValue*> *jsonMap;
+            HashMap<std::string,GenericValue*> *jsonMap;
 		public:
 		   	GJsonMap() : GenericValue(object_value)
 			{
-				jsonMap = new std::map<GenericValue*,GenericValue*>();
+				jsonMap = new HashMap<std::string,GenericValue*>();
 			}
+            ~GJsonMap()
+            {
+                delete jsonMap;
+            }
+            void put(const std::string& key, const GenericValue* value)
+            {
+                jsonMap->put(key,value);
+            }
+            void put(const char* key,const GenericValue* value)
+            {
+                const std::string k(key);
+                put(k,value);
+            }
+            GenericValue* get(const std::string& key) const
+            {
+                return jsonMap->get(key);
+            }
+            GenericValue* get(const char* key) const
+            {
+                std::string k(key);
+                return get(k);
+            }
+            std::string stringify() const
+            {
+                return std::string();
+            }
 	};
 
 	/*converts base calss value to a proper derived class value,
@@ -151,7 +183,7 @@ BEGIN_GJSON_NAMESPACE
 			return 0;
 		return dynamic_cast<T>(value);
 	}
-	
+
 END_GJSON_NAMESPACE
 
 #endif /*__GJSONVALUE_h__*/

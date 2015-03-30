@@ -17,7 +17,7 @@
 #define MEMBER_SEPERATOR ':'
 
 /*type of value in json format*/
-enum value_type_t 
+enum value_type_t
 {
 	null_value = 0,
 	int_value,
@@ -28,7 +28,7 @@ enum value_type_t
 	object_value
 };
 
-enum token_type_t 
+enum token_type_t
 {
 	token_array_begin=1,
 	token_array_end,

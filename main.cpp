@@ -26,29 +26,29 @@ using namespace gjson;
 int
 main (int argc, char **argv)
 {
-  /*std::string s("hello world");
+  std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);
   std::cout << "stringify : " << j_int->stringify()<< std::endl;
-  GJsonString *j_string = new GJsonString(s);
+  const GJsonString *j_string = new GJsonString(s);
   //std::cout << j_string->getValue() << std::endl;
-  GJsonArray *array = new GJsonArray();
+  /*GJsonArray *array = new GJsonArray();
   array->add(j_int);
   array->add(j_string);
-  GenericValue* v = array->get(0);*/
-  //GJsonInt* j = /*dynamic_cast<GJsonInt*>(v);*/gjson_cast<GJsonInt*>(v);
-  /*v = array->get(1);
+  GenericValue* v = array->get(0);
+  GJsonInt* j = dynamic_cast<GJsonInt*>(v);gjson_cast<GJsonInt*>(v);
+  v = array->get(1);
   GJsonString* js = gjson_cast<GJsonString*>(v);//dynamic_cast<GJsonString*>(v);
   if(!js)
     std::cout<<"Invalid conversion" << std::endl;
   else
   	std::cout << j->getValue() << "," << js->getValue() << std::endl;
   delete array;*/
-  HashMap<std::string,std::string> hm;
-  hm.put("A","XYZ");
-  hm.put("B","XYYY");
-  std::cout << "Value >>" << hm.get("B") << std::endl;
-  hm.remove("B");
-  std::cout << "Value >>" << hm.get("B") << std::endl;
+  GJsonMap *map = new GJsonMap();
+  map->put("A",j_string);
+  const GenericValue* val = map->get("A");
+  GJsonString* s1 = gjson_cast<GJsonString*>(val);
+  std::cout << "MAP : " << s1->getValue();
+  delete map;
   Application app (argc, argv);
   /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
