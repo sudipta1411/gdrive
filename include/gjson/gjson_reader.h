@@ -43,6 +43,7 @@ BEGIN_GJSON_NAMESPACE
 
             void skipWhiteSpace();
             token* readNextToken();
+            char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
             void addError(error* err);
             error* getError() const;
