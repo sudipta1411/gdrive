@@ -26,10 +26,10 @@ using namespace gjson;
 int
 main (int argc, char **argv)
 {
-  std::string s("hello world");
+  /*std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);
   std::cout << "stringify : " << j_int->stringify()<< std::endl;
-  GJsonString *j_string = new GJsonString(s);
+  GJsonString *j_string = new GJsonString(s);*/
   //std::cout << j_string->getValue() << std::endl;
   /*GJsonArray *array = new GJsonArray();
   array->add(j_int);
@@ -43,7 +43,7 @@ main (int argc, char **argv)
   else
   	std::cout << j->getValue() << "," << js->getValue() << std::endl;
   delete array;*/
-  GJsonMap *map = new GJsonMap();
+  /*GJsonMap *map = new GJsonMap();
   map->put("A",j_string);
   map->put("B",j_int);
   GenericValue* val = map->get("A");
@@ -52,7 +52,7 @@ main (int argc, char **argv)
   val = map->get("B");
   GJsonInt *i1 = gjson_cast<GJsonInt*>(val);
   std::cout << "MAP : " << i1->getValue() << std::endl;
-  delete map;
+  delete map;*/
   Application app (argc, argv);
   /*QPalette pal = app.palette();
   pal.setColor(QPalette::Window, Qt::white);
