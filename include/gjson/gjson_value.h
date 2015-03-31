@@ -148,13 +148,19 @@ BEGIN_GJSON_NAMESPACE
 			}
             ~GJsonMap()
             {
+                std::vector<std::string> keys = jsonMap->keys();
+                for(unsigned i=0;i<keys.size();i++)
+                {
+                    GenericValue *value = jsonMap->get(keys[i]);
+                    delete value;
+                }
                 delete jsonMap;
             }
-            void put(const std::string& key, const GenericValue* value)
+            void put(const std::string& key, GenericValue* value)
             {
                 jsonMap->put(key,value);
             }
-            void put(const char* key,const GenericValue* value)
+            void put(const char* key,GenericValue* value)
             {
                 const std::string k(key);
                 put(k,value);

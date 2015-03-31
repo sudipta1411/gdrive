@@ -209,7 +209,7 @@ std::vector<Key> HashMap<Key,Value> :: keys() const
 	for(unsigned i=0;i<buckets.size();i++)
 	{
 		for(Cell *cell = buckets[i];cell != NULL;cell=cell->next)
-			keys.add(cell->_key);
+			keys.push_back(cell->_key);
 	}
 	return keys;
 }
@@ -221,7 +221,7 @@ std::vector<Value> HashMap<Key,Value> :: values() const
 	for(unsigned i=0;i<buckets.size();i++)
 	{
 		for(Cell *cell = buckets[i];cell != NULL;cell=cell->next)
-			values.add(cell->_value);
+			values.push_back(cell->_value);
 	}
 	return values;
 }
