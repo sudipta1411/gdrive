@@ -136,7 +136,36 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
-	class GJsonMap : public GenericValue
+    struct Node
+    {
+        GenericValue* value;
+        Node* next;
+        /*Node* prev;*/
+    };
+
+    class GJsonMap : public GenericValue
+    {
+        private:
+            std::string key;
+            Node* val;
+        public:
+            GJsonMap()
+            {
+                key = std::string();
+                val = NULL;
+            }
+
+            GJsonMap(std::string &key,GenericValue* val)
+            {
+                this->key = key;
+                this->val = new Node;
+                this->val->value = val;
+                this->val->next = NULL;
+            }
+
+
+    };
+	/*class GJsonMap : public GenericValue
 	{
 		private :
 			//std::map<GenericValue*,GenericValue*> *jsonMap;
@@ -178,7 +207,7 @@ BEGIN_GJSON_NAMESPACE
             {
                 return std::string();
             }
-	};
+	};*/
 
 	/*converts base calss value to a proper derived class value,
 	 * using type information*/

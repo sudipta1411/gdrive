@@ -16,13 +16,15 @@ BEGIN_GJSON_NAMESPACE
 
             std::string doc;
 
-            struct node
+            /*struct node
             {
                 GenericValue *value;
+                node* next;
+                node* prev;
                 node* child;
                 node* sibling;
                 node* parent;
-            };
+            };*/
 
             struct token
             {
@@ -38,7 +40,7 @@ BEGIN_GJSON_NAMESPACE
                 std::string errMsg;
             };
 
-            node *root;
+            //node *root;
             std::vector<error*> errors;
 
             void skipWhiteSpace();
