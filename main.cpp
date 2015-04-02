@@ -26,6 +26,7 @@ using namespace gjson;
 int
 main (int argc, char **argv)
 {
+  /*XXX TEST MAIN FILE*/
   /*std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);
   std::cout << "stringify : " << j_int->stringify()<< std::endl;
