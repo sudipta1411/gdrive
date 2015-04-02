@@ -5,7 +5,7 @@ BEGIN_GJSON_NAMESPACE
     {
         begin = end = NULL;
         current = begin;
-        root = NULL;
+        //root = NULL;
         doc = std::string();
     }
 

@@ -28,6 +28,16 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
+    /*converts base calss value to a proper derived class value,
+	 * using type information*/
+	template<typename T>
+	T gjson_cast(GenericValue *value)
+	{
+		if(!value)
+			return 0;
+		return dynamic_cast<T>(value);
+	}
+
 	template<typename T>
 	class GJsonValue : public GenericValue
 	{
@@ -136,35 +146,134 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
-    struct Node
-    {
-        GenericValue* value;
-        Node* next;
-        /*Node* prev;*/
-    };
-
+    class Node;
     class GJsonMap : public GenericValue
     {
         private:
             std::string key;
             Node* val;
         public:
-            GJsonMap()
-            {
-                key = std::string();
-                val = NULL;
-            }
-
-            GJsonMap(std::string &key,GenericValue* val)
-            {
-                this->key = key;
-                this->val = new Node;
-                this->val->value = val;
-                this->val->next = NULL;
-            }
-
-
+            GJsonMap();
+            GJsonMap(std::string &key,GenericValue* value);
+            GJsonMap(char* key,GenericValue* value);
+            ~GJsonMap();
+            std::string stringify() const;
+            Node* getNode(const std::string& key) const;
+            Node* getNode() const;
+            GenericValue* getValue(const std::string& key) const;
+            std::string getKey() const;
     };
+
+    class Node
+    {
+        public:
+            GenericValue* value;
+            Node* next;
+            Node(GenericValue* value)
+            {
+                this->value = value;
+                this->next = NULL;
+            }
+
+            ~Node()
+            {
+                delete value;
+                delete next;
+            }
+            /*Node* prev;*/
+            void addNode(Node* node)
+            {
+                this->next = node;
+            }
+            void addNode(GenericValue* value)
+            {
+                Node* node = new Node(value);
+                this->next = node;
+            }
+
+            Node* findNode(const std::string& key)
+            {
+                Node* node = this;
+                for(;node!=NULL;node=node->next)
+                {
+                    GenericValue* v = node->value;
+                    if(v->getType() == object_value) //if value is GJsonMap
+                    {
+                        GJsonMap* map = gjson_cast<GJsonMap*>(v);
+                        if(map->getKey() == key)
+                            return node;
+                    }
+                }
+                return NULL;
+            }
+
+            GenericValue* findValueInNode(const std::string& key)
+            {
+                Node* node = findNode(key);
+                if(node)
+                    return node->value;
+                return NULL;
+            }
+
+            GenericValue* findValueInNode(const char* key)
+            {
+                std::string key_str(key);
+                return findValueInNode(key_str);
+            }
+    };
+
+    GJsonMap :: GJsonMap() : GenericValue(object_value)
+    {
+        key = std::string();
+        val = NULL;
+    }
+
+    GJsonMap :: GJsonMap(std::string &key,GenericValue* value) : GenericValue(object_value)
+    {
+        this->key = key;
+        this->val = new Node(value);
+    }
+
+    GJsonMap :: GJsonMap(char* key,GenericValue* value) : GenericValue(object_value)
+    {
+        this->key = std::string(key);
+        this->val = new Node(value);
+    }
+
+    GJsonMap :: ~GJsonMap()
+    {
+        delete val;
+    }
+
+    std::string GJsonMap :: stringify() const
+    {
+        return std::string();
+    }
+
+    Node* GJsonMap :: getNode(const std::string& key) const
+    {
+        if(key == this->key)
+            return this->val;
+        return NULL;
+    }
+
+    GenericValue* GJsonMap :: getValue(const std::string& key) const
+    {
+        Node* node = getNode(key);
+        if(!node)
+            return NULL;
+         return node->value;
+    }
+
+    std::string GJsonMap :: getKey() const
+    {
+        return this->key;
+    }
+
+    Node* GJsonMap :: getNode() const
+    {
+        return this->val;
+    }
 	/*class GJsonMap : public GenericValue
 	{
 		private :
@@ -208,17 +317,6 @@ BEGIN_GJSON_NAMESPACE
                 return std::string();
             }
 	};*/
-
-	/*converts base calss value to a proper derived class value,
-	 * using type information*/
-	template<typename T>
-	T gjson_cast(GenericValue *value)
-	{
-		if(!value)
-			return 0;
-		return dynamic_cast<T>(value);
-	}
-
 END_GJSON_NAMESPACE
 
 #endif /*__GJSONVALUE_h__*/
