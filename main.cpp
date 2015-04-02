@@ -37,7 +37,6 @@ main (int argc, char **argv)
   GenericValue* v = array->get(0);
   GJsonInt* j = dynamic_cast<GJsonInt*>(v);gjson_cast<GJsonInt*>(v);
   v = array->get(1);
->>>>>>> 06f38316ce7e5b9ff10d36d7a9e23ce05b477045
   GJsonString* js = gjson_cast<GJsonString*>(v);//dynamic_cast<GJsonString*>(v);
   if(!js)
     std::cout<<"Invalid conversion" << std::endl;
