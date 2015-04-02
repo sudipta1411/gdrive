@@ -31,6 +31,7 @@ HEADERS += ./include/gui/style/BaseStyle.h \
 		   ./include/util/HashCode.h \
 		   ./include/util/HashMap.h \
 		   ./include/gjson/gjson_type.h \
+		   ./include/gjson/gjson_reader.h \
 		   ./include/gjson/gjson_value.h
 SOURCES += main.cpp \
 		   BaseAppWindow.cpp \
@@ -47,4 +48,4 @@ SOURCES += main.cpp \
 		   ./gui/LoginWidget.cpp \
 		   ./util/utils.cpp \
 		   ./util/HashCode.cpp \
-		   ./util/HashMap.cpp
+		   ./gjson/gjson_reader.cpp
