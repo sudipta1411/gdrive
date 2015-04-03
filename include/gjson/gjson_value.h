@@ -274,49 +274,6 @@ BEGIN_GJSON_NAMESPACE
     {
         return this->val;
     }
-	/*class GJsonMap : public GenericValue
-	{
-		private :
-			//std::map<GenericValue*,GenericValue*> *jsonMap;
-            HashMap<std::string,GenericValue*> *jsonMap;
-		public:
-		   	GJsonMap() : GenericValue(object_value)
-			{
-				jsonMap = new HashMap<std::string,GenericValue*>();
-			}
-            ~GJsonMap()
-            {
-                std::vector<std::string> keys = jsonMap->keys();
-                for(unsigned i=0;i<keys.size();i++)
-                {
-                    GenericValue *value = jsonMap->get(keys[i]);
-                    delete value;
-                }
-                delete jsonMap;
-            }
-            void put(const std::string& key, GenericValue* value)
-            {
-                jsonMap->put(key,value);
-            }
-            void put(const char* key,GenericValue* value)
-            {
-                const std::string k(key);
-                put(k,value);
-            }
-            GenericValue* get(const std::string& key) const
-            {
-                return jsonMap->get(key);
-            }
-            GenericValue* get(const char* key) const
-            {
-                std::string k(key);
-                return get(k);
-            }
-            std::string stringify() const
-            {
-                return std::string();
-            }
-	};*/
 END_GJSON_NAMESPACE
 
 #endif /*__GJSONVALUE_h__*/

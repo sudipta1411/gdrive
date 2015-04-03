@@ -30,10 +30,12 @@ enum value_type_t
 
 enum token_type_t
 {
-	token_array_begin=1,
-	token_array_end,
-	token_object_begin,
-	token_object_end,
+	/*token_array_begin=1,
+	token_array_end,*/
+    token_array = 1,
+	/*token_object_begin,
+	token_object_end,*/
+    token_object,
 	token_string,
 	token_number,
 	token_boolean

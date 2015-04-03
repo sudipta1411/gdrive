@@ -5,8 +5,9 @@ BEGIN_GJSON_NAMESPACE
     {
         begin = end = NULL;
         current = begin;
-        //root = NULL;
+        root = NULL;
         doc = std::string();
+        _stack = std::stack<char>();
     }
 
     GJsonReader :: GJsonReader(std::string& _doc)
@@ -15,6 +16,8 @@ BEGIN_GJSON_NAMESPACE
         begin = doc.c_str();
         end = begin + doc.length();
         current = begin;
+        root = NULL;
+        _stack = std::stack<char>();
     }
 
     void GJsonReader :: skipWhiteSpace()
@@ -35,5 +38,29 @@ BEGIN_GJSON_NAMESPACE
         if(current == end)
             return 0;
         return *current++;
+    }
+
+    GJsonReader::Token* GJsonReader :: readNextToken()
+    {
+        Token* token = new Token();
+        skipWhiteSpace();
+        token->begin = current;
+        char ch = getNextChar();
+        bool ok = true;
+        switch(ch)
+        {
+            case ARRAY_BEGIN:
+                token->type = token_array;
+                _stack.push(ch);
+                ok = readArrayToken(token);
+                break;
+
+        }
+        return token;
+    }
+
+    bool readArrayToken(GJsonReader :: Token *token)
+    {
+        return true;
     }
 END_GJSON_NAMESPACE

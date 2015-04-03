@@ -16,39 +16,30 @@ BEGIN_GJSON_NAMESPACE
 
             std::string doc;
 
-            /*struct node
-            {
-                GenericValue *value;
-                node* next;
-                node* prev;
-                node* child;
-                node* sibling;
-                node* parent;
-            };*/
-
-            struct token
+            struct Token
             {
                 token_type_t type;
-                char* begin;
-                char* end;
+                const char* begin;
+                const char* end;
             };
 
-            struct error
+            struct Error
             {
-                token *tok;
+                Token *tok;
                 size_t begin;
                 std::string errMsg;
             };
 
-            //node *root;
-            std::vector<error*> errors;
+            Node *root;
+            std::vector<Error*> errors;
 
             void skipWhiteSpace();
-            token* readNextToken();
+            Token* readNextToken();
             char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
-            void addError(error* err);
-            error* getError() const;
+            void addError(Error& err);
+            bool readArrayToken(Token* token);
+            /*Error* getError() const;*/
         public :
             GJsonReader();
             GJsonReader(std::string& _doc);

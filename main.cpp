@@ -17,11 +17,11 @@
 #include "AppWindow.h"
 #include "Application.h"
 #include "gui/Animation.h"
-#include "gjson/gjson_value.h"
+//#include "gjson/gjson_value.h"
 #include "util/HashMap.h"
 #include <string>
 #include <iostream>
-using namespace gjson;
+//using namespace gjson;
 
 int
 main (int argc, char **argv)
@@ -54,7 +54,7 @@ main (int argc, char **argv)
   GJsonInt *i1 = gjson_cast<GJsonInt*>(val);
   std::cout << "MAP : " << i1->getValue() << std::endl;
   delete map;*/
-  {
+  /*{
     std::string s("hello world");
     Node* root;
     GJsonString *j_str = new GJsonString(s);
@@ -74,7 +74,7 @@ main (int argc, char **argv)
     GJsonString* str = gjson_cast<GJsonString*>(n->value);
     std::cout << str->getValue() << std::endl;
     delete root;
-  }
+  }*/
   Application app (argc, argv);
   return app.exec ();
 }
