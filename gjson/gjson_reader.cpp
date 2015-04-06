@@ -40,7 +40,7 @@ BEGIN_GJSON_NAMESPACE
         return *current++;
     }
 
-    GJsonReader::Token* GJsonReader :: readNextToken()
+    /*GJsonReader::Token* GJsonReader :: readNextToken()
     {
         Token* token = new Token();
         skipWhiteSpace();
@@ -57,10 +57,15 @@ BEGIN_GJSON_NAMESPACE
 
         }
         return token;
-    }
+    }*/
 
-    bool readArrayToken(GJsonReader :: Token *token)
+    bool GJsonReader :: readString(GJsonString& j_str)
     {
         return true;
     }
+
+    /*bool readArrayToken(GJsonReader :: Token *token)
+    {
+        return true;
+    }*/
 END_GJSON_NAMESPACE

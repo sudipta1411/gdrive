@@ -38,7 +38,19 @@ BEGIN_GJSON_NAMESPACE
             char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
             void addError(Error& err);
-            bool readArrayToken(Token* token);
+
+            /*read methods for basic json datatypes.
+             * NOTE : these functions uses the _stack
+             * e.g
+             * if(getNextChar()=='\"')
+             *     _stack.push('\"');
+             *     JSON_STRING = readString();
+             * readXXX method is responsible for popping relevant token
+             * from _stack and relevant error handling
+             * */
+            bool readString(GJsonString& j_str);
+
+            //bool readArrayToken(Token* token);
             /*Error* getError() const;*/
         public :
             GJsonReader();
