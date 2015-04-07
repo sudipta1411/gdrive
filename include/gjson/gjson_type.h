@@ -1,7 +1,8 @@
 #ifndef __GJSONTYPE_H__
 #define __GJSONTYPE_H__
 
-#define BEGIN_GJSON_NAMESPACE namespace gjson {
+#define GJSON gjson
+#define BEGIN_GJSON_NAMESPACE namespace GJSON {
 #define END_GJSON_NAMESPACE } /*namespace gjson*/
 
 /*Various token type*/

@@ -34,6 +34,7 @@ BEGIN_GJSON_NAMESPACE
             std::vector<Error*> errors;
 
             void skipWhiteSpace();
+            bool isWhiteSpace(char ch);
             Token* readNextToken();
             char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
@@ -47,8 +48,10 @@ BEGIN_GJSON_NAMESPACE
              *     JSON_STRING = readString();
              * readXXX method is responsible for popping relevant token
              * from _stack and relevant error handling
-             * */
-            bool readString(GJsonString& j_str);
+            * */
+            GJsonString* readString();
+            GJsonInt* readInt();
+            GJsonReal* readReal();
 
             //bool readArrayToken(Token* token);
             /*Error* getError() const;*/

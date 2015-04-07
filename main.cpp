@@ -21,7 +21,7 @@
 #include "util/HashMap.h"
 #include <string>
 #include <iostream>
-//using namespace gjson;
+//using namespace GJSON;
 
 int
 main (int argc, char **argv)

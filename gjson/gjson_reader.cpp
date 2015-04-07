@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "gjson/gjson_reader.h"
 
 BEGIN_GJSON_NAMESPACE
@@ -33,6 +34,11 @@ BEGIN_GJSON_NAMESPACE
         }
     }
 
+    bool inline GJsonReader :: isWhiteSpace(char ch)
+    {
+        return (ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r');
+    }
+
     char GJsonReader :: getNextChar()
     {
         if(current == end)
@@ -59,9 +65,60 @@ BEGIN_GJSON_NAMESPACE
         return token;
     }*/
 
-    bool GJsonReader :: readString(GJsonString& j_str)
+    GJsonString* GJsonReader :: readString()
     {
-        return true;
+        std::string s;
+        char ch;
+        GJsonString* j_str = NULL;
+        skipWhiteSpace();
+        while(current != end)
+        {
+            ch = getNextChar();
+            if(ch == '\\')
+            {
+                s.append(1,ch);
+                ch = getNextChar();
+                s.append(1,ch);
+                continue;
+            }
+            if(ch == STRING_END || ch == STRING_END_1)
+            {
+                if(ch == _stack.top())
+                {
+                    _stack.pop();
+                    break;
+                }
+                else /*Error Handling*/
+                    return NULL;
+            }
+            s.append(1,ch);
+        }
+        j_str = new GJsonString(s);
+        return j_str;
+    }
+
+    GJsonInt* GJsonReader :: readInt()
+    {
+        int sum = 0;
+        int val = 0;
+        const int base = 10;
+        GJsonInt* j_int = NULL;
+
+        char ch = getNextChar();
+        bool isNeg = (ch == '-');
+        if(!isNeg) --current;
+        while(current != end)
+        {
+            ch = getNextChar();
+            if(isWhiteSpace(ch) || ch == ',')
+                break;
+            sum = val*base;
+            if(ch >= '0' && ch <= '9')
+                val = (sum + std::atoi(&ch));
+        }
+        if(isNeg) val *= -1;
+        j_int = new GJsonInt(val);
+        return j_int;
     }
 
     /*bool readArrayToken(GJsonReader :: Token *token)
