@@ -66,6 +66,16 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
+	class GJsonLong : public GJsonValue<long>
+	{
+		public :
+			GJsonLong(long _value) : GJsonValue(_value,long_value) {}
+			std::string stringify() const
+			{
+				return std::string();
+			}
+	};
+
 	class GJsonReal : public GJsonValue<double>
 	{
 		public :

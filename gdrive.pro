@@ -1,4 +1,5 @@
 CONFIG += debug
+CONFIG += c++11 
 TEMPLATE = app
 TARGET = gdrive
 INCLUDEPATH += ./include

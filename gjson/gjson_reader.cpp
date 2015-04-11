@@ -4,9 +4,9 @@
 BEGIN_GJSON_NAMESPACE
     GJsonReader :: GJsonReader()
     {
-        begin = end = NULL;
+        begin = end = nullptr;
         current = begin;
-        root = NULL;
+        root = nullptr;
         doc = std::string();
         _stack = std::stack<char>();
     }
@@ -17,7 +17,7 @@ BEGIN_GJSON_NAMESPACE
         begin = doc.c_str();
         end = begin + doc.length();
         current = begin;
-        root = NULL;
+        root = nullptr;
         _stack = std::stack<char>();
     }
 
@@ -69,7 +69,7 @@ BEGIN_GJSON_NAMESPACE
     {
         std::string s;
         char ch;
-        GJsonString* j_str = NULL;
+        GJsonString* j_str = nullptr;
         skipWhiteSpace();
         while(current != end)
         {
@@ -89,7 +89,7 @@ BEGIN_GJSON_NAMESPACE
                     break;
                 }
                 else /*Error Handling*/
-                    return NULL;
+                    return nullptr;
             }
             s.append(1,ch);
         }
@@ -97,28 +97,62 @@ BEGIN_GJSON_NAMESPACE
         return j_str;
     }
 
-    GJsonInt* GJsonReader :: readInt()
+    GJsonLong* GJsonReader :: readLong()
     {
-        int sum = 0;
-        int val = 0;
-        const int base = 10;
-        GJsonInt* j_int = NULL;
+        #define IS_HEX_CHAR(c) (((c)>='A' && (c)<='F') || ((c)>='a' && (c)<='f'))
+        long sum = 0;
+        long val = 0;
+        int base = 10;
+        GJsonLong* j_long = nullptr;
 
         char ch = getNextChar();
         bool isNeg = (ch == '-');
-        if(!isNeg) --current;
+        if(!isNeg)
+        {
+            if(ch != '+')
+                --current;
+        }
+        
+        //HEX value
+        if(*current=='0' && (*(current+1)=='x'||*(current+1)=='X'))
+        {
+            base = 16;
+            current += 2;
+        }
         while(current != end)
         {
             ch = getNextChar();
             if(isWhiteSpace(ch) || ch == ',')
                 break;
-            sum = val*base;
-            if(ch >= '0' && ch <= '9')
+            /*if(std::atoi(&ch) >= base)
+                break;*/
+
+            sum = val * base;
+            if(/*ch >= '0' && ch <= '9'*/std::isdigit(ch))
                 val = (sum + std::atoi(&ch));
+            else if(base == 16 /*&& IS_HEX_CHAR(ch)*/)
+            {
+                if(IS_HEX_CHAR(ch))
+                {
+                    val = sum + [] (char ch){ return std::isupper(ch) ? 
+                            (ch - 'A' + 10) : 
+                            (ch - 'a' + 10); }
+                            (ch);
+                }
+                else
+                {
+                    return j_long; //ERROR
+                }
+            }
         }
         if(isNeg) val *= -1;
-        j_int = new GJsonInt(val);
-        return j_int;
+        j_long = new GJsonLong(val);
+        return j_long;
+    }
+
+    GJsonReal* GJsonReader :: readReal()
+    {
+        
     }
 
     /*bool readArrayToken(GJsonReader :: Token *token)
