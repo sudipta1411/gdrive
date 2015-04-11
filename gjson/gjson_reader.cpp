@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include "gjson/gjson_reader.h"
 
+#define IS_HEX_CHAR(c) (((c)>='A' && (c)<='F') || ((c)>='a' && (c)<='f'))
+
 BEGIN_GJSON_NAMESPACE
     GJsonReader :: GJsonReader()
     {
@@ -99,7 +101,6 @@ BEGIN_GJSON_NAMESPACE
 
     GJsonLong* GJsonReader :: readLong()
     {
-        #define IS_HEX_CHAR(c) (((c)>='A' && (c)<='F') || ((c)>='a' && (c)<='f'))
         long sum = 0;
         long val = 0;
         int base = 10;
@@ -134,9 +135,9 @@ BEGIN_GJSON_NAMESPACE
             {
                 if(IS_HEX_CHAR(ch))
                 {
-                    val = sum + [] (char ch){ return std::isupper(ch) ? 
-                            (ch - 'A' + 10) : 
-                            (ch - 'a' + 10); }
+                    val = sum + [] (char c){ return std::isupper(c) ? 
+                            (c - 'A' + 10) : 
+                            (c - 'a' + 10); }
                             (ch);
                 }
                 else
@@ -152,7 +153,54 @@ BEGIN_GJSON_NAMESPACE
 
     GJsonReal* GJsonReader :: readReal()
     {
-        
+        double val = 0.0;
+        double sum = 0.0;
+        int base = 10;
+        int dec_num = 0;
+        GJsonReal* j_real = nullptr;
+        char ch = getNextChar();
+        bool isNeg = (ch == '-');
+        bool isDec = false;
+        if(!isNeg)
+        {
+            if(ch != '+')
+                --current;
+        }
+
+        while(current != end)
+        {
+            ch = getNextChar();
+            if(isWhiteSpace(ch) || ch == ',')
+                break;
+            
+            if(ch=='.' && !isDec)
+            {
+                isDec = true;
+                ch = getNextChar();
+            }
+            if(!std::isdigit(ch))
+            {
+                return j_real; //ERROR
+            }
+            if(isDec)
+            {
+                dec_num++;
+                val += [=](char c,int dec) { double ret_val = std::atoi(&c);
+                        while(dec--) ret_val /= base;
+                        return ret_val;
+                    }(ch,dec_num);
+            }
+            else
+            {
+                sum = val * base;
+                if(/*ch >= '0' && ch <= '9'*/std::isdigit(ch))
+                    val = (sum + std::atoi(&ch));
+            
+            }
+        }
+        if(isNeg) val *= -1;
+        j_real = new GJsonReal(val);
+        return j_real;
     }
 
     /*bool readArrayToken(GJsonReader :: Token *token)
