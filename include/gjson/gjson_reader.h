@@ -50,7 +50,7 @@ BEGIN_GJSON_NAMESPACE
              * from _stack and relevant error handling
             * */
             GJsonString* readString();
-            GJsonInt* readInt();
+            GJsonLong* readLong();
             GJsonReal* readReal();
 
             //bool readArrayToken(Token* token);

@@ -22,6 +22,7 @@ enum value_type_t
 {
 	null_value = 0,
 	int_value,
+	long_value,
 	real_value,
 	string_value,
 	bool_value,
