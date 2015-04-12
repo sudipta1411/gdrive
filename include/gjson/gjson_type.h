@@ -12,8 +12,8 @@
 #define OBJECT_END '}'
 #define STRING_BEGIN '"'
 #define STRING_END STRING_BEGIN
-#define STRINF_BEGIN_1 '\''
-#define STRING_END_1 STRINF_BEGIN_1
+#define STRING_BEGIN_1 '\''
+#define STRING_END_1 STRING_BEGIN_1
 #define SEPERATOR ','
 #define MEMBER_SEPERATOR ':'
 

@@ -203,6 +203,106 @@ BEGIN_GJSON_NAMESPACE
         return j_real;
     }
 
+    /*this method will get called when 
+     either 't' or 'f' has already been read*/
+    GJsonBool* GJsonReader :: readBool(char cur)
+    {
+        GJsonBool* j_bool = nullptr;
+        bool boolean;
+        char ch;
+        while(current != end)
+        {
+            ch = getNextChar();
+            if(isWhiteSpace(ch) || ch == ',')
+                break;
+
+            if(cur == 't')
+            {
+                if(ch == 'r' && *current == 'u' && *(current+1) == 'e')
+                {
+                    boolean = true;
+                    current += 2;
+                    break;
+                }
+                else if(ch == 'a' && *current == 'l' && *(current+1) == 's'
+                        && *(current +2) == 'e')
+                {
+                    boolean = false;
+                    current += 3;
+                    break;
+                }
+                else
+                {
+                    return j_bool; //ERROR
+                }
+            }
+        }
+        j_bool = new GJsonBool(boolean);
+        return j_bool;
+    }
+
+    GJsonArray* GJsonReader :: readArray()
+    {
+        GJsonArray* j_array = new GJsonArray();
+        char ch;
+        while(current != end)
+        {
+            skipWhiteSpace();
+            ch = getNextChar();
+            if(ch == ARRAY_END)
+            {
+                if(ARRAY_BEGIN == _stack.top())
+                {
+                    _stack.pop();
+                    break;
+                }
+                else
+                {
+                    //ERROR
+                    return nullptr;
+                }
+            }
+            /*XXX TO-DO :nullptr return value is to be checked for errors*/
+            if(std::isdigit(ch))//Either integer or float value
+            {
+                --current;
+                GJsonLong *j_long = readLong();
+                j_array->add(j_long);
+            }
+            else if(ch == STRING_BEGIN || ch == STRING_BEGIN_1)
+            {
+                _stack.push(ch);
+                GJsonString* j_string = readString();
+                j_array->add(j_string);
+            }
+            else if(ch == 't' || ch == 'f')
+            {
+                GJsonBool* j_bool = readBool(ch);
+                j_array->add(j_bool);
+            }
+            else if(ch == ARRAY_BEGIN)
+            {
+                _stack.push(ch);
+                GJsonArray* nested = readArray();
+                j_array->add(nested);
+            }
+            else if(ch == OBJECT_BEGIN)
+            {
+                _stack.push(ch);
+                GJsonMap* j_map = readObject();
+                j_array->add(j_map);
+            }
+        }
+        return j_array;
+    }
+
+    GJsonMap* GJsonReader :: readObject()
+    {
+        char ch;
+        GJsonMap* j_map = nullptr;
+        return j_map;
+    }
+
     /*bool readArrayToken(GJsonReader :: Token *token)
     {
         return true;

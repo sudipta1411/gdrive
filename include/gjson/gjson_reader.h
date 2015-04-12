@@ -52,6 +52,13 @@ BEGIN_GJSON_NAMESPACE
             GJsonString* readString();
             GJsonLong* readLong();
             GJsonReal* readReal();
+            GJsonBool* readBool(char cur);
+
+            /*read methods for compound data type(array,object)
+              the above comment applies here as well
+            */
+            GJsonArray* readArray();
+            GJsonMap* readObject();
 
             //bool readArrayToken(Token* token);
             /*Error* getError() const;*/

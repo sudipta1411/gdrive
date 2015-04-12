@@ -108,7 +108,7 @@ BEGIN_GJSON_NAMESPACE
 
 	/*An array can contain any type of value
 	 * eg [1,2,"x",{"y":1234}]*/
-	class GJsonArray : GenericValue
+	class GJsonArray : public GenericValue
 	{
 		typedef GenericValue* ptr_to_gen;
 		private :
