@@ -30,7 +30,7 @@ BEGIN_GJSON_NAMESPACE
                 std::string errMsg;
             };
 
-            Node *root;
+            GJsonMap *root; //root map
             std::vector<Error*> errors;
 
             void skipWhiteSpace();

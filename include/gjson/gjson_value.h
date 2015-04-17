@@ -48,7 +48,8 @@ BEGIN_GJSON_NAMESPACE
 			GJsonValue(const GJsonValue<T> &_value);
 			/*value_type_t type;*/
 		public :
-			GJsonValue(T _value,value_type_t _type = null_value) : GenericValue(_type),value(_value)/*,type(_type)*/ {}
+			GJsonValue(T _value,value_type_t _type = null_value) :
+                GenericValue(_type),value(_value)/*,type(_type)*/ {}
 			~GJsonValue()
 			{
 				//std::cout << "Deleting " << getType() << std::endl;
@@ -156,133 +157,104 @@ BEGIN_GJSON_NAMESPACE
 			}
 	};
 
-    class Node;
     class GJsonMap : public GenericValue
     {
         private:
             std::string key;
-            Node* val;
-        public:
-            GJsonMap();
-            GJsonMap(std::string &key,GenericValue* value);
-            GJsonMap(char* key,GenericValue* value);
-            ~GJsonMap();
-            std::string stringify() const;
-            Node* getNode(const std::string& key) const;
-            Node* getNode() const;
-            GenericValue* getValue(const std::string& key) const;
-            std::string getKey() const;
-    };
-
-    class Node
-    {
-        public:
-            GenericValue* value;
-            Node* next;
-            Node(GenericValue* value)
+            std::vector<GenericValue*> children;
+        public :
+            GJsonMap(std::string key="JSON_OBJECT") : GenericValue(object_value)
             {
-                this->value = value;
-                this->next = NULL;
+                this->key = key;
+                children = std::vector<GenericValue*>();
             }
 
-            ~Node()
+            ~GJsonMap()
             {
-                delete value;
-                delete next;
-            }
-            /*Node* prev;*/
-            void addNode(Node* node)
-            {
-                this->next = node;
-            }
-            void addNode(GenericValue* value)
-            {
-                Node* node = new Node(value);
-                this->next = node;
-            }
-
-            Node* findNode(const std::string& key)
-            {
-                Node* node = this;
-                for(;node!=NULL;node=node->next)
+                for(auto ptr : children)
                 {
-                    GenericValue* v = node->value;
-                    if(v->getType() == object_value) //if value is GJsonMap
+                  delete ptr;
+                }
+            }
+
+            void add(GenericValue* value)
+            {
+                children.push_back(value);
+            }
+
+            void setKey(std::string key)
+            {
+                this->key = key;
+            }
+
+            unsigned int size() const
+            {
+                return children.size();
+            }
+
+            std::string getKey() { return key; }
+
+            GenericValue* find(std::string key)
+            {
+                for(auto gv : children)
+                {
+                    if(gv->getType() == object_value)
                     {
-                        GJsonMap* map = gjson_cast<GJsonMap*>(v);
-                        if(map->getKey() == key)
-                            return node;
+                        GJsonMap* tmp = gjson_cast<GJsonMap*>(gv);
+                        if(tmp->getKey() == key)
+                        {
+                            if(tmp->size()==1u)
+                                return tmp->children.at(0);
+                            return gv;
+                        }
                     }
                 }
-                return NULL;
-            }
-
-            GenericValue* findValueInNode(const std::string& key)
-            {
-                Node* node = findNode(key);
-                if(node)
-                    return node->value;
-                return NULL;
-            }
-
-            GenericValue* findValueInNode(const char* key)
-            {
-                std::string key_str(key);
-                return findValueInNode(key_str);
+                return nullptr;
             }
     };
 
-    GJsonMap :: GJsonMap() : GenericValue(object_value)
+    bool getValue(GenericValue* gv,long& result)
     {
-        key = std::string();
-        val = NULL;
+        if(gv == nullptr || gv->getType() != long_value)
+            return false;
+        GJsonLong* j_long = gjson_cast<GJsonLong*>(gv);
+        if(j_long == nullptr)
+            return false;
+        result = j_long->getValue();
+        return true;
     }
 
-    GJsonMap :: GJsonMap(std::string &key,GenericValue* value) : GenericValue(object_value)
+    bool getValue(GenericValue* gv,double& result)
     {
-        this->key = key;
-        this->val = new Node(value);
+        if(gv == nullptr || gv->getType() != real_value)
+            return false;
+        GJsonReal* j_real = gjson_cast<GJsonReal*>(gv);
+        if(j_real == nullptr)
+            return false;
+        result = j_real->getValue();
+        return true;
     }
 
-    GJsonMap :: GJsonMap(char* key,GenericValue* value) : GenericValue(object_value)
+    bool getValue(GenericValue* gv,std::string& result)
     {
-        this->key = std::string(key);
-        this->val = new Node(value);
+        if(gv == nullptr || gv->getType() != string_value)
+            return false;
+        GJsonString* j_str = gjson_cast<GJsonString*>(gv);
+        if(j_str == nullptr)
+            return false;
+        result = j_str->getValue();
+        return true;
     }
 
-    GJsonMap :: ~GJsonMap()
+    bool getValue(GenericValue* gv,bool& result)
     {
-        delete val;
-    }
-
-    std::string GJsonMap :: stringify() const
-    {
-        return std::string();
-    }
-
-    Node* GJsonMap :: getNode(const std::string& key) const
-    {
-        if(key == this->key)
-            return this->val;
-        return NULL;
-    }
-
-    GenericValue* GJsonMap :: getValue(const std::string& key) const
-    {
-        Node* node = getNode(key);
-        if(!node)
-            return NULL;
-         return node->value;
-    }
-
-    std::string GJsonMap :: getKey() const
-    {
-        return this->key;
-    }
-
-    Node* GJsonMap :: getNode() const
-    {
-        return this->val;
+        if(gv == nullptr || gv->getType() != bool_value)
+            return false;
+        GJsonBool* j_bool = gjson_cast<GJsonBool*>(gv);
+        if(j_bool == nullptr)
+            return false;
+        result = j_bool->getValue();
+        return true;
     }
 END_GJSON_NAMESPACE
 
