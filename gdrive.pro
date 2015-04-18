@@ -49,4 +49,5 @@ SOURCES += main.cpp \
 		   ./gui/LoginWidget.cpp \
 		   ./util/utils.cpp \
 		   ./util/HashCode.cpp \
-		   ./gjson/gjson_reader.cpp
+		   ./gjson/gjson_reader.cpp \
+		   ./gjson/gjson_value.cpp

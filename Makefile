@@ -60,7 +60,8 @@ SOURCES       = main.cpp \
 		gui/LoginWidget.cpp \
 		util/utils.cpp \
 		util/HashCode.cpp \
-		gjson/gjson_reader.cpp GenFiles/Debug/moc_BaseStyle.cpp \
+		gjson/gjson_reader.cpp \
+		gjson/gjson_value.cpp GenFiles/Debug/moc_BaseStyle.cpp \
 		GenFiles/Debug/moc_PushButtonStyle.cpp \
 		GenFiles/Debug/moc_LineEditStyle.cpp \
 		GenFiles/Debug/moc_Animation.cpp \
@@ -89,6 +90,7 @@ OBJECTS       = DebugIntermediate/main.o \
 		DebugIntermediate/utils.o \
 		DebugIntermediate/HashCode.o \
 		DebugIntermediate/gjson_reader.o \
+		DebugIntermediate/gjson_value.o \
 		DebugIntermediate/moc_BaseStyle.o \
 		DebugIntermediate/moc_PushButtonStyle.o \
 		DebugIntermediate/moc_LineEditStyle.o \
@@ -321,7 +323,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d DebugIntermediate/gdrive1.0.0 || mkdir -p DebugIntermediate/gdrive1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h include/util/HashCode.h include/util/HashMap.h include/gjson/gjson_type.h include/gjson/gjson_reader.h include/gjson/gjson_value.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp util/HashCode.cpp gjson/gjson_reader.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents include/gui/style/BaseStyle.h include/gui/style/PushButtonStyle.h include/gui/style/LineEditStyle.h include/gui/Animation.h include/gui/style/CheckBoxStyle.h include/gui/BaseWidget.h include/gui/LoginWidget.h include/gui/InputField.h include/gui/Button.h include/BaseApplication.h include/BaseAppWindow.h include/AppWindow.h include/Application.h include/StyleAttribute.h include/util/utils.h include/util/HashCode.h include/util/HashMap.h include/gjson/gjson_type.h include/gjson/gjson_reader.h include/gjson/gjson_value.h DebugIntermediate/gdrive1.0.0/ && $(COPY_FILE) --parents main.cpp BaseAppWindow.cpp AppWindow.cpp Application.cpp gui/style/BaseStyle.cpp gui/style/PushButtonStyle.cpp gui/style/LineEditStyle.cpp gui/Animation.cpp gui/InputField.cpp gui/Button.cpp gui/style/CheckBoxStyle.cpp gui/BaseWidget.cpp gui/LoginWidget.cpp util/utils.cpp util/HashCode.cpp gjson/gjson_reader.cpp gjson/gjson_value.cpp DebugIntermediate/gdrive1.0.0/ && (cd `dirname DebugIntermediate/gdrive1.0.0` && $(TAR) gdrive1.0.0.tar gdrive1.0.0 && $(COMPRESS) gdrive1.0.0.tar) && $(MOVE) `dirname DebugIntermediate/gdrive1.0.0`/gdrive1.0.0.tar.gz . && $(DEL_FILE) -r DebugIntermediate/gdrive1.0.0
 
 
 clean:compiler_clean 
@@ -4418,6 +4420,9 @@ DebugIntermediate/gjson_reader.o: gjson/gjson_reader.cpp include/gjson/gjson_rea
 		include/util/HashMap.h \
 		include/util/HashCode.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/gjson_reader.o gjson/gjson_reader.cpp
+
+DebugIntermediate/gjson_value.o: gjson/gjson_value.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/gjson_value.o gjson/gjson_value.cpp
 
 DebugIntermediate/moc_BaseStyle.o: GenFiles/Debug/moc_BaseStyle.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DebugIntermediate/moc_BaseStyle.o GenFiles/Debug/moc_BaseStyle.cpp

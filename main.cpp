@@ -17,7 +17,7 @@
 #include "AppWindow.h"
 #include "Application.h"
 #include "gui/Animation.h"
-//#include "gjson/gjson_value.h"
+#include "gjson/gjson_value.h"
 #include "util/HashMap.h"
 #include <string>
 #include <iostream>
