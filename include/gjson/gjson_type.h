@@ -15,7 +15,7 @@
 #define STRING_BEGIN_1 '\''
 #define STRING_END_1 STRING_BEGIN_1
 #define SEPERATOR ','
-#define MEMBER_SEPERATOR ':'
+#define KEY_VALUE_SEP ':'
 
 /*type of value in json format*/
 enum value_type_t

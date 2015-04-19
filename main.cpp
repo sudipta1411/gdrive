@@ -18,14 +18,27 @@
 #include "Application.h"
 #include "gui/Animation.h"
 #include "gjson/gjson_value.h"
+#include "gjson/gjson_reader.h"
 #include "util/HashMap.h"
 #include <string>
 #include <iostream>
-//using namespace GJSON;
-
+using namespace GJSON;
+using namespace std;
 int
 main (int argc, char **argv)
 {
+    std::string t = "{'a':'Hello World'}";
+    std::cout << t << std::endl;
+    GJsonReader reader(t);
+    bool ok = reader.parse();
+    std::cout << ok << std::endl;
+    string key = "a";
+    string value;
+    GenericValue* s = reader.getValue(key);
+    if(s==nullptr)
+        cout<<"opps"<<endl;
+    getValue(s,value);
+    cout<<value<<endl;
   /*XXX TEST MAIN FILE*/
   /*std::string s("hello world");
   GJsonInt *j_int = new GJsonInt(10);

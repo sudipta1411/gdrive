@@ -121,7 +121,7 @@ BEGIN_GJSON_NAMESPACE
 			}
 			GJsonArray(const GJsonArray &j_array) : GenericValue(array_value)
 			{
-				const std::vector<GenericValue*> *v = j_array.getArray();
+				const std::vector<GenericValue*> *v = j_array.array;//j_array.getArray();
 				array = new std::vector<GenericValue*>(*v);
 			}
 			~GJsonArray()
@@ -133,10 +133,10 @@ BEGIN_GJSON_NAMESPACE
 				}
 				delete array;
 			}
-			std::vector<GenericValue*> *getArray() const
+			/*std::vector<GenericValue*> *getArray() const
 			{
 				return array;
-			}
+			}*/
 
 			bool add(const ptr_to_gen& value)
 			{
@@ -147,14 +147,18 @@ BEGIN_GJSON_NAMESPACE
 			GenericValue* get(int pos)
 			{
 				if(pos<0 || (unsigned)pos>=array->size())
-					return (GenericValue*)0;
+					return nullptr;
 				return array->at(pos);
 			}
+
+            unsigned int size() const { return array->size(); }
 
 			std::string stringify() const
 			{
 				return std::string();
 			}
+
+
 	};
 
     class GJsonMap : public GenericValue
@@ -177,7 +181,7 @@ BEGIN_GJSON_NAMESPACE
                 }
             }
 
-            void add(GenericValue* value)
+            void addChild(GenericValue* value)
             {
                 children.push_back(value);
             }
@@ -186,6 +190,8 @@ BEGIN_GJSON_NAMESPACE
             {
                 this->key = key;
             }
+
+            std::string getkey() const { return this->key; }
 
             unsigned int size() const
             {

@@ -64,9 +64,10 @@ BEGIN_GJSON_NAMESPACE
             /*Error* getError() const;*/
         public :
             GJsonReader();
-            GJsonReader(std::string& _doc);
-            void parse(std::string& _doc);
-            void parse();
+            GJsonReader(const std::string& _doc);
+            bool parse(const std::string& _doc);
+            bool parse();
+            GenericValue* getValue(const std::string& key) const;
     };
 END_GJSON_NAMESPACE
 #endif /*__GJSON_READER_H__*/
