@@ -27,17 +27,22 @@ using namespace std;
 int
 main (int argc, char **argv)
 {
-    std::string t = string("{'ab':1234545,") + "'cd':231233}";
+    std::string t = string("{'ab':[1,2,3,4,12354,6],") + "'cd': ' Hello world '}";
     std::cout << t << std::endl;
     GJsonReader reader(t);
-    bool ok = reader.parse();
-    std::cout << ok << std::endl;
-    string key = "ab";
-    long value;
+    reader.parse();
+    //std::cout << ok << std::endl;
+    string key = "cd";
+    string value;
     GenericValue* s = reader.getValue(key);
     if(s==nullptr)
         cout<<"opps"<<endl;
     getValue(s,value);
+    /*if(s->getType() == array_value)
+    {
+      GJsonArray* arr = gjson_cast<GJsonArray*>(s);
+      cout << "at 4 : " << gjson_cast<GJsonLong*>(arr->get(4))->getValue()<<endl;
+    }*/
     cout<<value<<endl;
   /*XXX TEST MAIN FILE*/
   /*std::string s("hello world");

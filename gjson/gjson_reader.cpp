@@ -24,6 +24,12 @@ BEGIN_GJSON_NAMESPACE
         root = nullptr;
         _stack = std::stack<char>();
     }
+
+    GJsonReader :: ~GJsonReader()
+    {
+       begin = end = current = nullptr; 
+       delete root;
+    }
     
     bool GJsonReader :: parse()
     {
@@ -118,7 +124,7 @@ BEGIN_GJSON_NAMESPACE
         std::string s;
         char ch;
         GJsonString* j_str = nullptr;
-        skipWhiteSpace();
+        //skipWhiteSpace();
         while(current != end)
         {
             ch = getNextChar();
@@ -170,7 +176,10 @@ BEGIN_GJSON_NAMESPACE
         {
             ch = getNextChar();
             if(isWhiteSpace(ch) || ch == ',')
+            {
+                current--;
                 break;
+            }
             /*if(std::atoi(&ch) >= base)
                 break;*/
 
@@ -217,7 +226,10 @@ BEGIN_GJSON_NAMESPACE
         {
             ch = getNextChar();
             if(isWhiteSpace(ch) || ch == ',')
+            {   
+                current--;
                 break;
+            }
             
             if(ch=='.' && !isDec)
             {
@@ -347,14 +359,16 @@ BEGIN_GJSON_NAMESPACE
         char ch;
         GJsonMap* j_map = new GJsonMap();
         bool has_read_sep = false;
+        //cout << "Caling readMap" << endl;
         while(current != end)
         {
             skipWhiteSpace();
             ch = getNextChar();
-            cout << "readMap : " << ch << endl;
+            //cout << "readMap : " << ch << endl;
             if(ch == SEPERATOR)
                 break;
             has_read_sep = (!has_read_sep)?(ch==KEY_VALUE_SEP):true;
+            //cout << "has_read_sep : " << has_read_sep << endl;
             if(ch == STRING_BEGIN || ch == STRING_BEGIN_1)
             {
                 _stack.push(ch);
@@ -362,12 +376,12 @@ BEGIN_GJSON_NAMESPACE
                 if(has_read_sep == false) 
                 {
                     //has_read_sep = true;
-                    cout<<"Key : "<<j_str->getValue()<<endl;
+                    //cout<<"Key : "<<j_str->getValue()<<endl;
                     j_map->setKey(j_str->getValue());
                 }
                 else 
                 {
-                    cout<<"Value : "<<j_str->getValue()<<endl;
+                    //cout<<"Value : "<<j_str->getValue()<<endl;
                     j_map->addChild(j_str);
                     //has_read_sep = !isEqualToChar(SEPERATOR);
                     
@@ -377,6 +391,7 @@ BEGIN_GJSON_NAMESPACE
             {
                 --current;
                 GJsonLong *j_long = readLong();
+                //cout << "Long value : " << j_long->getValue()<<endl;
                 j_map->addChild(j_long);
             }
             else if(ch == 't' || ch == 'f')
@@ -408,7 +423,7 @@ BEGIN_GJSON_NAMESPACE
         {
             skipWhiteSpace();
             ch = getNextChar();
-            cout << ch << endl;
+            //cout << ch << endl;
             if(ch == OBJECT_END)
             {
                 if(OBJECT_BEGIN == _stack.top())

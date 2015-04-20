@@ -71,6 +71,7 @@ BEGIN_GJSON_NAMESPACE
         public :
             GJsonReader();
             GJsonReader(const std::string& _doc);
+            ~GJsonReader();
             bool parse(const std::string& _doc);
             bool parse();
             GenericValue* getValue(const std::string& key) const;
