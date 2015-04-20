@@ -39,7 +39,7 @@ BEGIN_GJSON_NAMESPACE
             char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
             void addError(Error& err);
-
+            bool isEqualToChar(char c);
             /*read methods for basic json datatypes.
              * NOTE : these functions uses the _stack
              * e.g
@@ -55,11 +55,17 @@ BEGIN_GJSON_NAMESPACE
             GJsonBool* readBool(char cur);
 
             /*read methods for compound data type(array,object)
-              the above comment applies here as well
+             * the above comment applies here as well
             */
             GJsonArray* readArray();
             GJsonMap* readObject();
-
+            /*NOTE : a json object is everything between '{' and '}'
+             * Where as a JSON map is a key-value pair, where the key is a string,
+             * abd value can be any JSON type value(e.g another object,array,
+             * string etc). A json object can contain multiple key-value pair,
+             * seperated with comma.
+            * */
+            GJsonMap* readMap();
             //bool readArrayToken(Token* token);
             /*Error* getError() const;*/
         public :
@@ -68,6 +74,7 @@ BEGIN_GJSON_NAMESPACE
             bool parse(const std::string& _doc);
             bool parse();
             GenericValue* getValue(const std::string& key) const;
+            bool ok() const;
     };
 END_GJSON_NAMESPACE
 #endif /*__GJSON_READER_H__*/

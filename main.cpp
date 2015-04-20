@@ -27,13 +27,13 @@ using namespace std;
 int
 main (int argc, char **argv)
 {
-    std::string t = "{'a':'Hello World'}";
+    std::string t = string("{'ab':1234545,") + "'cd':231233}";
     std::cout << t << std::endl;
     GJsonReader reader(t);
     bool ok = reader.parse();
     std::cout << ok << std::endl;
-    string key = "a";
-    string value;
+    string key = "ab";
+    long value;
     GenericValue* s = reader.getValue(key);
     if(s==nullptr)
         cout<<"opps"<<endl;
