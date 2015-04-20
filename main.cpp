@@ -32,17 +32,17 @@ main (int argc, char **argv)
     GJsonReader reader(t);
     reader.parse();
     //std::cout << ok << std::endl;
-    string key = "cd";
+    string key = "ab";
     string value;
     GenericValue* s = reader.getValue(key);
     if(s==nullptr)
         cout<<"opps"<<endl;
     getValue(s,value);
-    /*if(s->getType() == array_value)
+    if(s->getType() == array_value)
     {
       GJsonArray* arr = gjson_cast<GJsonArray*>(s);
       cout << "at 4 : " << gjson_cast<GJsonLong*>(arr->get(4))->getValue()<<endl;
-    }*/
+    }
     cout<<value<<endl;
   /*XXX TEST MAIN FILE*/
   /*std::string s("hello world");
