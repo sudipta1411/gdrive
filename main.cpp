@@ -22,16 +22,24 @@
 #include "util/HashMap.h"
 #include <string>
 #include <iostream>
+#include <chrono>
+
 using namespace GJSON;
 using namespace std;
+using namespace std::chrono;
+
 int
 main (int argc, char **argv)
 {
-    std::string t = string("{'ab':[1,2,3,4,12354,6],") + "'cd': ' Hello world '}";
+    std::string t = string("{'ab':[1,2,3,false,{'ef' : 'sudipta'},42],\n") 
+          + "'cd': ' Hello world '" + "}";
     std::cout << t << std::endl;
     GJsonReader reader(t);
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     reader.parse();
-    //std::cout << ok << std::endl;
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
+    std::cout << duration << std::endl;
     string key = "ab";
     string value;
     GenericValue* s = reader.getValue(key);
@@ -41,58 +49,13 @@ main (int argc, char **argv)
     if(s->getType() == array_value)
     {
       GJsonArray* arr = gjson_cast<GJsonArray*>(s);
-      cout << "at 4 : " << gjson_cast<GJsonLong*>(arr->get(4))->getValue()<<endl;
+      GJsonMap* m = gjson_cast<GJsonMap*>(arr->get(4));
+      key = "ef";
+      getValue(m->find(key),value);
+      //cout << "at 4 : " << gjson_cast<GJsonLong*>(arr->get(4))->getValue()<<endl;
     }
-    cout<<value<<endl;
-  /*XXX TEST MAIN FILE*/
-  /*std::string s("hello world");
-  GJsonInt *j_int = new GJsonInt(10);
-  std::cout << "stringify : " << j_int->stringify()<< std::endl;
-  GJsonString *j_string = new GJsonString(s);*/
-  //std::cout << j_string->getValue() << std::endl;
-  /*GJsonArray *array = new GJsonArray();
-  array->add(j_int);
-  array->add(j_string);
-  GenericValue* v = array->get(0);
-  GJsonInt* j = dynamic_cast<GJsonInt*>(v);gjson_cast<GJsonInt*>(v);
-  v = array->get(1);
-  GJsonString* js = gjson_cast<GJsonString*>(v);//dynamic_cast<GJsonString*>(v);
-  if(!js)
-    std::cout<<"Invalid conversion" << std::endl;
-  else
-  	std::cout << j->getValue() << "," << js->getValue() << std::endl;
-  delete array;*/
-  /*GJsonMap *map = new GJsonMap();
-  map->put("A",j_string);
-  map->put("B",j_int);
-  GenericValue* val = map->get("A");
-  GJsonString* s1 = gjson_cast<GJsonString*>(val);
-  std::cout << "MAP : " << s1->getValue() << std::endl;
-  val = map->get("B");
-  GJsonInt *i1 = gjson_cast<GJsonInt*>(val);
-  std::cout << "MAP : " << i1->getValue() << std::endl;
-  delete map;*/
-  /*{
-    std::string s("hello world");
-    Node* root;
-    GJsonString *j_str = new GJsonString(s);
-    GJsonMap* map1 = new GJsonMap("A",j_str);
-    root = new Node(map1);
-    std::string s1("Hello World");
-    GJsonMap* map2 = new GJsonMap("B",new GJsonString(s1));
-    root->addNode(map2);
-    GenericValue* v = root->findValueInNode("A");
-    if(!v)
-    {
-        std::cout << "Not found" << std::endl;
-        return -1;
-    }
-    GJsonMap* m = gjson_cast<GJsonMap*>(v);
-    Node* n = m->getNode();
-    GJsonString* str = gjson_cast<GJsonString*>(n->value);
-    std::cout << str->getValue() << std::endl;
-    delete root;
-  }*/
+    cout<<"Value XX: "<<value<<endl;
+    cout << "ok : " << reader.ok()<<endl;
   Application app (argc, argv);
   return app.exec ();
 }

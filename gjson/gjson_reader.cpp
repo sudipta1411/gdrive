@@ -93,6 +93,12 @@ BEGIN_GJSON_NAMESPACE
         return *current++;
     }
 
+    bool inline GJsonReader :: isLastElem(char c)
+    {
+        return ((c == ARRAY_END && _stack.top() == ARRAY_BEGIN)
+                || (c == OBJECT_END && _stack.top() == OBJECT_BEGIN));
+    }
+
     bool GJsonReader :: isEqualToChar(char c)
     {
         skipWhiteSpace();
@@ -175,7 +181,7 @@ BEGIN_GJSON_NAMESPACE
         while(current != end)
         {
             ch = getNextChar();
-            if(isWhiteSpace(ch) || ch == ',')
+            if(isWhiteSpace(ch) || ch == SEPERATOR || isLastElem(ch))
             {
                 current--;
                 break;
@@ -225,7 +231,7 @@ BEGIN_GJSON_NAMESPACE
         while(current != end)
         {
             ch = getNextChar();
-            if(isWhiteSpace(ch) || ch == ',')
+            if(isWhiteSpace(ch) || ch == SEPERATOR || isLastElem(ch))
             {   
                 current--;
                 break;
@@ -271,7 +277,7 @@ BEGIN_GJSON_NAMESPACE
         while(current != end)
         {
             ch = getNextChar();
-            if(isWhiteSpace(ch) || ch == ',')
+            if(isWhiteSpace(ch) || ch == SEPERATOR || isLastElem(ch))
                 break;
 
             if(cur == 't')
@@ -307,6 +313,7 @@ BEGIN_GJSON_NAMESPACE
         {
             skipWhiteSpace();
             ch = getNextChar();
+            //cout << "readArray : " << ch <<endl;
             if(ch == ARRAY_END)
             {
                 if(ARRAY_BEGIN == _stack.top())
@@ -325,6 +332,7 @@ BEGIN_GJSON_NAMESPACE
             {
                 --current;
                 GJsonLong *j_long = readLong();
+                //cout << "value : "<<j_long->getValue() << "current : " << *current<<endl;
                 j_array->add(j_long);
             }
             else if(ch == STRING_BEGIN || ch == STRING_BEGIN_1)
@@ -367,6 +375,11 @@ BEGIN_GJSON_NAMESPACE
             //cout << "readMap : " << ch << endl;
             if(ch == SEPERATOR)
                 break;
+            if(ch == OBJECT_END && _stack.top() == OBJECT_BEGIN)
+            {
+                --current;
+                break;
+            }
             has_read_sep = (!has_read_sep)?(ch==KEY_VALUE_SEP):true;
             //cout << "has_read_sep : " << has_read_sep << endl;
             if(ch == STRING_BEGIN || ch == STRING_BEGIN_1)
@@ -423,7 +436,7 @@ BEGIN_GJSON_NAMESPACE
         {
             skipWhiteSpace();
             ch = getNextChar();
-            //cout << ch << endl;
+            //cout << "readObject : " << ch << endl;
             if(ch == OBJECT_END)
             {
                 if(OBJECT_BEGIN == _stack.top())
@@ -442,8 +455,4 @@ BEGIN_GJSON_NAMESPACE
         }
         return j_map;
     }
-    /*bool readArrayToken(GJsonReader :: Token *token)
-    {
-        return true;
-    }*/
 END_GJSON_NAMESPACE

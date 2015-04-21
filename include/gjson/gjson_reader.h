@@ -40,6 +40,7 @@ BEGIN_GJSON_NAMESPACE
             bool containsNewline(const char*_begin,const char* _end);
             void addError(Error& err);
             bool isEqualToChar(char c);
+            bool isLastElem(char c);
             /*read methods for basic json datatypes.
              * NOTE : these functions uses the _stack
              * e.g
