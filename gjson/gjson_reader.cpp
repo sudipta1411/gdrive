@@ -390,7 +390,8 @@ BEGIN_GJSON_NAMESPACE
                 {
                     //has_read_sep = true;
                     //cout<<"Key : "<<j_str->getValue()<<endl;
-                    j_map->setKey(j_str->getValue());
+                    std::string key = j_str->getValue();
+                    j_map->setKey(key);
                 }
                 else 
                 {

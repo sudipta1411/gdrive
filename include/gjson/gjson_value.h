@@ -1,7 +1,6 @@
 #ifndef __GJSONVALUE_h__
 #define __GJSONVALUE_h__
 
-//#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -115,50 +114,13 @@ BEGIN_GJSON_NAMESPACE
 		private :
 			std::vector<GenericValue*> *array;
 		public :
-			GJsonArray():GenericValue(array_value)
-			{
-				array = new std::vector<GenericValue*>();
-			}
-			GJsonArray(const GJsonArray &j_array) : GenericValue(array_value)
-			{
-				const std::vector<GenericValue*> *v = j_array.array;//j_array.getArray();
-				array = new std::vector<GenericValue*>(*v);
-			}
-			~GJsonArray()
-			{
-				for(std::vector<GenericValue*>::iterator first = array->begin();
-								first != array->end();first++)
-				{
-					delete *first;
-				}
-				delete array;
-			}
-			/*std::vector<GenericValue*> *getArray() const
-			{
-				return array;
-			}*/
-
-			bool add(const ptr_to_gen& value)
-			{
-				array->push_back(value);
-				return true;
-			}
-
-			GenericValue* get(int pos)
-			{
-				if(pos<0 || (unsigned)pos>=array->size())
-					return nullptr;
-				return array->at(pos);
-			}
-
-            unsigned int size() const { return array->size(); }
-
-			std::string stringify() const
-			{
-				return std::string();
-			}
-
-
+			GJsonArray();
+			GJsonArray(const GJsonArray &j_array);
+			~GJsonArray();
+			bool add(const ptr_to_gen& value);
+			GenericValue* get(int pos);
+            unsigned size() const;
+			std::string stringify() const;
 	};
 
     class GJsonMap : public GenericValue
@@ -167,56 +129,16 @@ BEGIN_GJSON_NAMESPACE
             std::string key;
             std::vector<GenericValue*> children;
         public :
-            GJsonMap(std::string key="JSON_OBJECT") : GenericValue(object_value)
-            {
-                this->key = key;
-                children = std::vector<GenericValue*>();
-            }
+            GJsonMap(std::string key="JSON_OBJECT");
+            ~GJsonMap();
+            void addChild(GenericValue* value);
+            void setKey(std::string& key);
+            std::string getKey() const;
+            unsigned size() const;
+            GenericValue* find(const std::string& key);
+            GenericValue* operator[](const std::string& key);
+			std::string stringify() const;
 
-            ~GJsonMap()
-            {
-                for(auto ptr : children)
-                {
-                  delete ptr;
-                }
-            }
-
-            void addChild(GenericValue* value)
-            {
-                children.push_back(value);
-            }
-
-            void setKey(std::string key)
-            {
-                this->key = key;
-            }
-
-            std::string getkey() const { return this->key; }
-
-            unsigned int size() const
-            {
-                return children.size();
-            }
-
-            std::string getKey() { return key; }
-
-            GenericValue* find(std::string key)
-            {
-                for(auto gv : children)
-                {
-                    if(gv->getType() == object_value)
-                    {
-                        GJsonMap* tmp = gjson_cast<GJsonMap*>(gv);
-                        if(tmp->getKey() == key)
-                        {
-                            if(tmp->size()==1u)
-                                return tmp->children.at(0);
-                            return gv;
-                        }
-                    }
-                }
-                return nullptr;
-            }
     };
 
     bool getValue(GenericValue* gv,long& result);
