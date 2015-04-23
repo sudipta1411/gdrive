@@ -375,6 +375,7 @@ BEGIN_GJSON_NAMESPACE
             //cout << "readMap : " << ch << endl;
             if(ch == SEPERATOR)
                 break;
+            //std::cout <<"Top : " <<_stack.top() << endl;
             if(ch == OBJECT_END && _stack.top() == OBJECT_BEGIN)
             {
                 --current;
@@ -389,8 +390,8 @@ BEGIN_GJSON_NAMESPACE
                 if(has_read_sep == false) 
                 {
                     //has_read_sep = true;
-                    //cout<<"Key : "<<j_str->getValue()<<endl;
                     std::string key = j_str->getValue();
+                    //cout<<"Key : "<<key<<endl;
                     j_map->setKey(key);
                 }
                 else 
@@ -421,6 +422,7 @@ BEGIN_GJSON_NAMESPACE
             }
             else if(ch == OBJECT_BEGIN)
             {
+                _stack.push(ch);
                 GJsonMap* nested = readObject();
                 j_map->addChild(nested);
             }
