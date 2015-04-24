@@ -16,16 +16,8 @@ BEGIN_GJSON_NAMESPACE
 
             std::string doc;
 
-            struct Token
-            {
-                token_type_t type;
-                const char* begin;
-                const char* end;
-            };
-
             struct Error
             {
-                Token *tok;
                 size_t begin;
                 std::string errMsg;
             };
@@ -35,7 +27,6 @@ BEGIN_GJSON_NAMESPACE
 
             void skipWhiteSpace();
             bool isWhiteSpace(char ch);
-            Token* readNextToken();
             char getNextChar();
             bool containsNewline(const char*_begin,const char* _end);
             void addError(Error& err);

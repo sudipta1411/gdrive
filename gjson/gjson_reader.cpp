@@ -106,25 +106,6 @@ BEGIN_GJSON_NAMESPACE
         return ch==c;
     }
 
-    /*GJsonReader::Token* GJsonReader :: readNextToken()
-    {
-        Token* token = new Token();
-        skipWhiteSpace();
-        token->begin = current;
-        char ch = getNextChar();
-        bool ok = true;
-        switch(ch)
-        {
-            case ARRAY_BEGIN:
-                token->type = token_array;
-                _stack.push(ch);
-                ok = readArrayToken(token);
-                break;
-
-        }
-        return token;
-    }*/
-
     GJsonString* GJsonReader :: readString()
     {
         std::string s;
@@ -396,11 +377,12 @@ BEGIN_GJSON_NAMESPACE
                 }
                 else 
                 {
-                    //cout<<"Value : "<<j_str->getValue()<<endl;
+                    cout<<"Value : "<<j_str->getValue()<<endl;
                     j_map->addChild(j_str);
                     //has_read_sep = !isEqualToChar(SEPERATOR);
                     
                 }
+                cout << "Ch : " << *current << endl;
             }
             else if(std::isdigit(ch))
             {
@@ -426,7 +408,6 @@ BEGIN_GJSON_NAMESPACE
                 GJsonMap* nested = readObject();
                 j_map->addChild(nested);
             }
-            
         }
         return j_map;
     }

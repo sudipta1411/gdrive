@@ -119,6 +119,7 @@ BEGIN_GJSON_NAMESPACE
 			~GJsonArray();
 			bool add(const ptr_to_gen& value);
 			GenericValue* get(int pos);
+            GenericValue* operator[](int pos);
             unsigned size() const;
 			std::string stringify() const;
 	};

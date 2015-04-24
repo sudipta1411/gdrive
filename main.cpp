@@ -56,19 +56,15 @@ main (int argc, char **argv)
     high_resolution_clock::time_point t2 = high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
     std::cout << duration << std::endl;
-    string key = "required";
+    string key = "properties";
     string value;
     GenericValue* s = reader.getValue(key);
-    /*if(s==nullptr)
-        cout<<"opps"<<endl;
-    getValue(s,value);*/
-    if(s->getType() == array_value)
+    GJsonMap* map = gjson_cast<GJsonMap*>(s);
     {
-      GJsonArray* arr = gjson_cast<GJsonArray*>(s);
-      GJsonString* m = gjson_cast<GJsonString*>(arr->get(1));
-      //key = "gh";
-      //getValue((*m)[key],value);
-      cout << "at 4 : " << m->getValue()<<endl;//gjson_cast<GJsonLong*>(arr->get(4))->getValue()<<endl;
+      key = "age";
+      GJsonMap *m = gjson_cast<GJsonMap*>((*map)[key]);
+      key = "description";
+      cout << gjson_cast<GJsonString*>((*m)[key])->getValue()<<endl;
     }
     cout<<"Value XX: "<<value<<endl;
     cout << "ok : " << reader.ok()<<endl;

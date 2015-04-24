@@ -36,6 +36,11 @@ BEGIN_GJSON_NAMESPACE
         return array->at(pos);
     }
 
+    GenericValue* GJsonArray :: operator[](int pos)
+    {
+        return get(pos);
+    }
+
     unsigned inline GJsonArray :: size() const { return array->size(); }
 
     std::string GJsonArray :: stringify() const
